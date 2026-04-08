@@ -730,10 +730,10 @@ function onCmdNotification(event) {
         }
         break;
 
-      case 'GB':
+      /*case 'GB':
         const batt = data.voltage ? `${data.voltage}V (${data.state})` : data.state || '-';
         document.getElementById('infoBattery').textContent = batt;
-        break;
+        break;*/
 
       case 'GP':
         if (data.val !== undefined) {
@@ -1048,7 +1048,7 @@ async function setQueryParameter() {
 async function getDeviceInfo() {
   await sendCmd({cmd:'DI'});
   await sendCmd({cmd:'GT'});
-  await sendCmd({cmd:'GB'});
+  //await sendCmd({cmd:'GB'});
 }
 
 // ═══════════════════════════════════════════════════════════
