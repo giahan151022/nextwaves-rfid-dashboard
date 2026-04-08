@@ -483,18 +483,9 @@ input[type=range] { flex:1; cursor:pointer; accent-color:var(--accent); }
             <div class="form-group">
               <label class="form-label">DWELL (RAW COUNT)</label>
               <select class="form-input form-select" id="dwell">
-                <option value="2" selected>2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-                <option value="150">150</option>
-                <option value="200">200</option>
-                <option value="255">255</option>
+                <script>
+                  document.write(Array.from({length: 254}, (_, i) => `<option value="${i+2}">${i+2}</option>`).join(''));
+                </script>
               </select>
             </div>
             <div class="form-group">
@@ -1047,7 +1038,7 @@ async function setQueryParameter() {
   const i = document.getElementById('interval').value;
   const d = document.getElementById('dwell').value;
   const a = document.getElementById('append').value;
-  await sendCmd({cmd:'SQP', val: i+','+d+','+a});
+  await sendCmd(JSON.stringify({cmd:'SQP', val: i+','+d+','+a}));
 }
 //async function setBuzzer(state) { await sendCmd({cmd:'BZ', val: state}); }
 async function getDeviceInfo() {
