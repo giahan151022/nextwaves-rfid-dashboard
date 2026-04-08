@@ -354,7 +354,7 @@ input[type=range] { flex:1; cursor:pointer; accent-color:var(--accent); }
     </div>
   </div>
   <div class="sidebar-footer">
-    <button class="ble-btn disconnected" id="bleBtn" onclick="toggleBLE()">
+    <button class="ble-btn disconnected" id="bleBtn" onclick="closeSidebar();toggleBLE()">
       <span class="status-dot" id="statusDot"></span>
       <span id="bleBtnText">CONNECT BLE</span>
     </button>
@@ -656,6 +656,7 @@ function switchTab(name) {
 // BLE CONNECTION
 // ═══════════════════════════════════════════════════════════
 async function toggleBLE() {
+  closeSidebar();
   if (isConnected) { await disconnectBLE(); }
   else { await connectBLE(); }
 }
@@ -671,7 +672,9 @@ async function connectBLE() {
     logDebug(`Đang tìm thiết bị: "${BLE_CONFIG.name}"...`, 'info');
 
     bleDevice = await navigator.bluetooth.requestDevice({
-      filters: [{ name: BLE_CONFIG.name }],
+      // Bluefy/iOS WebKit đôi khi không tìm được khi filter theo name
+      // Dùng acceptAllDevices + optionalServices để hiện tất cả thiết bị BLE
+      acceptAllDevices: true,
       optionalServices: [BLE_CONFIG.serviceUUID]  // 0x00ff
     });
     logDebug(`Tìm thấy thiết bị: ${bleDevice.name}`, 'info');
@@ -697,7 +700,7 @@ async function connectBLE() {
       fileDataChar.addEventListener('characteristicvaluechanged', onFileData);
       logDebug('File Data Char found ✓', 'info');
     } catch(e) {
-      logDebug('File Data Char không tìm thấy (bỏ qua): ' + e.message, 'info');
+      logDebug('File Data Char không tìm thấy (bỏ qua): ' + (e?.message || e?.toString?.() || 'unknown'), 'info');
     }
 
     await cmdChar.startNotifications();
@@ -715,16 +718,30 @@ async function connectBLE() {
 
   } catch(e) {
     setBLEUI('disconnected');
-    logDebug(`❌ Lỗi kết nối [${e.name}]: ${e.message}`, 'err');
 
-    if (e.name === 'NotFoundError') {
-      // Người dùng tự đóng dialog → không cần thông báo
-    } else if (e.name === 'SecurityError') {
-      showToast('❌ Bị chặn: Cần HTTPS hoặc localhost', 'error');
-    } else if (e.name === 'NetworkError') {
+    // Bluefy/WebKit đôi khi throw object rỗng hoặc string thay vì Error
+    const eName = e?.name || (typeof e === 'string' ? 'StringError' : 'UnknownError');
+    const eMsg  = e?.message || (typeof e === 'string' ? e : null)
+                  || e?.toString?.() || '';
+    const isBluefyCancel = !eName || eName === 'UnknownError' || eMsg === '' || eMsg === 'undefined' || eMsg === '[object Object]';
+
+    // Log đầy đủ để debug
+    try { logDebug(`❌ RAW error: ${JSON.stringify(e)}`, 'err'); } catch(_) {}
+    logDebug(`❌ Lỗi kết nối [${eName}]: ${eMsg || '(no message)'}`, 'err');
+
+    if (isBluefyCancel
+        || eName === 'NotFoundError'
+        || eMsg.includes('cancel') || eMsg.includes('chosen')
+        || eMsg.includes('User cancelled') || eMsg.includes('no device')) {
+      // Người dùng đóng dialog hoặc không chọn thiết bị → im lặng
+    } else if (eName === 'SecurityError' || eMsg.includes('secure') || eMsg.includes('https')) {
+      showToast('❌ Bị chặn: Cần HTTPS', 'error');
+    } else if (eName === 'NetworkError') {
       showToast('❌ Mất kết nối GATT. Thử lại!', 'error');
+    } else if (eName === 'NotSupportedError') {
+      showBLEGuide();
     } else {
-      showToast('❌ Lỗi: ' + e.message, 'error');
+      showToast('❌ ' + (eMsg || eName || 'Lỗi không xác định'), 'error');
     }
   }
 }
@@ -755,7 +772,7 @@ async function sendCmd(obj) {
   try {
     await cmdChar.writeValue(enc);
     logDebug('TX: ' + str, 'tx');
-  } catch(e) { logDebug('TX Error: ' + e.message, 'err'); }
+  } catch(e) { logDebug('TX Error: ' + (e?.message || e?.toString?.() || 'unknown'), 'err'); }
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1237,14 +1254,14 @@ function downloadFile(name, content, type) {
 // ═══════════════════════════════════════════════════════════
 function getBLEEnv() {
   const ua = navigator.userAgent;
-  const isIOS = /iPad|iPhone|iPod/.test(ua);
+  const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   const isAndroid = /Android/.test(ua);
-  const isChrome = /Chrome/.test(ua) && !/Edg/.test(ua);
-  const isEdge = /Edg/.test(ua);
-  const isSafari = /Safari/.test(ua) && !isChrome;
-  const isFirefox = /Firefox/.test(ua);
-  if (isIOS) return 'ios';
-  if (isAndroid && isChrome) return 'android-chrome';
+  const isEdge = /Edg\//.test(ua);
+  const isChrome = /Chrome\//.test(ua) && !isEdge;
+  const isSafari = /Safari\//.test(ua) && !isChrome && !isEdge;
+  const isFirefox = /Firefox\//.test(ua);
+  if (isIOS) return 'ios';                          // iOS bất kể browser nào
+  if (isAndroid && (isChrome || isEdge)) return 'android-chrome';
   if (isAndroid) return 'android-other';
   if (isChrome || isEdge) return 'desktop-chrome';
   if (isSafari) return 'desktop-safari';
@@ -1376,6 +1393,7 @@ function closeSidebar() {
 // ═══════════════════════════════════════════════════════════
 logDebug('Nextwaves RFID Dashboard v2.0 ready', 'info');
 logDebug('Chờ kết nối BLE... (Chrome required)', 'info');
+logDebug('ENV: ' + getBLEEnv() + ' | BT: ' + (navigator.bluetooth ? 'available ✓' : 'MISSING ✗') + ' | ' + navigator.userAgent.substring(0,100), 'info');
 </script>
 </body>
 </html>
