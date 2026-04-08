@@ -762,7 +762,7 @@ function onCmdNotification(event) {
         }
         break;
 
-      case 'GRP':
+      case 'GQP':
         if (data.val) {
           const [interval, dwell, append] = data.val.toString().split(',');
           if (interval) document.getElementById('interval').value = parseInt(interval);
@@ -1073,7 +1073,7 @@ function setBLEUI(state) {
 }
 
 function setControlsEnabled(en) {
-  ['scanBtn','setPowerBtn','setRFBtn','setQBtn','buzzerOnBtn','buzzerOffBtn','getInfoBtn','fetchBtn','locateBtn'].forEach(id => {
+  ['scanBtn','setPowerBtn','setRFBtn','setQBtn', 'setQPBtn','getInfoBtn','fetchBtn','locateBtn'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.disabled = !en;
   });
