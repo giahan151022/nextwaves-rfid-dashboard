@@ -630,7 +630,7 @@ async function connectBLE() {
 
     // Auto-fetch device info
     setTimeout(() => sendCmd({cmd:'DI'}), 600);
-    setTimeout(() => sendCmd({cmd:'GB'}), 1200);
+    //setTimeout(() => sendCmd({cmd:'GB'}), 1200);
 
   } catch(e) {
     setBLEUI('disconnected');
