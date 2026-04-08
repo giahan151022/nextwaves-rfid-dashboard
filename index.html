@@ -1038,7 +1038,7 @@ async function setQueryParameter() {
   const i = document.getElementById('interval').value;
   const d = document.getElementById('dwell').value;
   const a = document.getElementById('append').value;
-  await sendCmd(JSON.stringify({cmd:'SQP', val: i+','+d+','+a}));
+  await sendCmd({cmd:'SQP', val: i+','+d+','+a});
 }
 //async function setBuzzer(state) { await sendCmd({cmd:'BZ', val: state}); }
 async function getDeviceInfo() {
