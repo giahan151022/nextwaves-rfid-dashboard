@@ -469,10 +469,46 @@ input[type=range] { flex:1; cursor:pointer; accent-color:var(--accent); }
           </div>
         </div>
         <div class="card">
-          <div class="card-title">🔔 Buzzer</div>
-          <div style="display:flex;gap:8px;">
-            <button class="btn btn-success btn-sm" onclick="setBuzzer('on')" id="buzzerOnBtn" disabled>🔔 ON</button>
-            <button class="btn btn-danger btn-sm" onclick="setBuzzer('off')" id="buzzerOffBtn" disabled>🔕 OFF</button>
+          <div class="card-title">📊 Query Parameter</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="form-group">
+              <label class="form-label">Interval (ms)</label>
+              <select class="form-input form-select" id="interval">
+                <option value="0">0 ms</option><option value="10">10 ms</option>
+                <option value="20">20 ms</option><option value="30">30 ms</option>
+                <option value="40" selected>40 ms</option><option value="50">50 ms</option>
+                <option value="60">60 ms</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">DWELL (RAW COUNT)</label>
+              <select class="form-input form-select" id="dwell">
+                <option value="2" selected>2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
+                <option value="200">200</option>
+                <option value="255">255</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Append</label>
+              <select class="form-input form-select" id="append">
+                <option value="0">0</option><option value="1" selected>1</option>
+                <option value="2">2</option><option value="3">3</option></option>
+                <option value="4">4</option>
+              </select>
+            </div>
+          </div>
+          <div class="settings-actions">
+            <button class="btn btn-outline btn-sm" onclick="getSettings('GQP')">↓ GET</button>
+            <button class="btn btn-primary btn-sm" onclick="setQueryParameter()" id="setQPBtn" disabled>↑ SET</button>
           </div>
         </div>
       </div>
@@ -723,6 +759,15 @@ function onCmdNotification(event) {
           const [qv, sess] = data.val.toString().split(',');
           if (qv) document.getElementById('qValue').value = parseInt(qv);
           if (sess) document.getElementById('session').value = parseInt(sess);
+        }
+        break;
+
+      case 'GRP':
+        if (data.val) {
+          const [interval, dwell, append] = data.val.toString().split(',');
+          if (interval) document.getElementById('interval').value = parseInt(interval);
+          if (dwell) document.getElementById('dwell').value = parseInt(dwell);
+          if (append) document.getElementById('append').value = parseInt(append);
         }
         break;
 
@@ -998,7 +1043,13 @@ async function setQSession() {
   const s = document.getElementById('session').value;
   await sendCmd({cmd:'SQS', val: q+','+s});
 }
-async function setBuzzer(state) { await sendCmd({cmd:'BZ', val: state}); }
+async function setQueryParameter() {
+  const i = document.getElementById('interval').value;
+  const d = document.getElementById('dwell').value;
+  const a = document.getElementById('append').value;
+  await sendCmd({cmd:'SQP', val: i+','+d+','+a});
+}
+//async function setBuzzer(state) { await sendCmd({cmd:'BZ', val: state}); }
 async function getDeviceInfo() {
   await sendCmd({cmd:'DI'});
   await sendCmd({cmd:'GT'});
