@@ -245,30 +245,111 @@ input[type=range] { flex:1; cursor:pointer; accent-color:var(--accent); }
 
 /* TOAST */
 #toast-container { position:fixed; bottom:20px; right:20px; z-index:9999; display:flex; flex-direction:column-reverse; gap:8px; }
+
+/* ── MOBILE RESPONSIVE ── */
+/* Hamburger button (mobile only) */
+.hamburger {
+  display:none; position:fixed; top:12px; left:12px; z-index:200;
+  width:40px; height:40px; border-radius:10px; border:1px solid var(--border);
+  background:var(--bg-secondary); color:var(--text); font-size:18px;
+  cursor:pointer; align-items:center; justify-content:center; transition:all .2s;
+}
+.hamburger:hover { background:var(--bg-card2); }
+
+/* Overlay backdrop */
+.sidebar-overlay {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,.6);
+  z-index:99; backdrop-filter:blur(2px);
+}
+.sidebar-overlay.show { display:block; }
+
+@media (max-width: 768px) {
+  body { overflow:hidden; }
+
+  /* Show hamburger */
+  .hamburger { display:flex; }
+
+  /* Sidebar slides in as overlay */
+  .sidebar {
+    position:fixed; left:-240px; top:0; height:100vh; z-index:100;
+    transition:left .25s cubic-bezier(.4,0,.2,1); width:240px;
+  }
+  .sidebar.open { left:0; box-shadow:4px 0 24px rgba(0,0,0,.5); }
+
+  /* Main takes full width */
+  .main { width:100%; }
+
+  /* Topbar: extra left padding for hamburger */
+  .topbar { padding:0 12px 0 60px; }
+  .topbar-title { font-size:13px; }
+
+  /* Stats: 2 columns on mobile */
+  .stats-row { grid-template-columns:repeat(2,1fr); }
+
+  /* Settings / locate: single column */
+  .settings-grid { grid-template-columns:1fr; }
+  .locate-grid  { grid-template-columns:1fr; }
+
+  /* Shrink stat values */
+  .stat-val { font-size:22px; }
+
+  /* Content padding */
+  .content { padding:14px 12px; }
+
+  /* Table: hide less-important columns on small screen */
+  thead th:nth-child(4),
+  tbody td:nth-child(4),
+  thead th:nth-child(6),
+  tbody td:nth-child(6) { display:none; }
+
+  /* Buttons smaller */
+  .btn { padding:8px 14px; font-size:12px; }
+  .scan-controls { gap:6px; }
+
+  /* Debug log shorter */
+  .debug-log { height:260px; }
+
+  /* Signal circle smaller */
+  .signal-circle { width:120px; height:120px; }
+  .signal-val { font-size:24px; }
+
+  /* Toast full width bottom */
+  #toast-container { left:12px; right:12px; bottom:12px; }
+}
+
+@media (max-width: 480px) {
+  .stats-row { grid-template-columns:repeat(2,1fr); gap:8px; }
+  .topbar-status .hw-btn-indicator { display:none; } /* hide HW indicator on very small screens */
+}
 </style>
 </head>
 <body>
 
+<!-- Hamburger (mobile) -->
+<button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+<!-- Overlay backdrop (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
 <!-- SIDEBAR -->
-<nav class="sidebar">
+<nav class="sidebar" id="sidebar">
   <div class="logo">
     <div class="logo-title">⚡ Nextwaves</div>
     <div class="logo-sub">UHF RFID Controller v2.0</div>
   </div>
   <div class="nav">
-    <div class="nav-item active" onclick="switchTab('scanner')">
+    <div class="nav-item active" onclick="switchTab('scanner');closeSidebar()">
       <span class="nav-icon">📡</span> Scanner
     </div>
-    <div class="nav-item" onclick="switchTab('locate')">
+    <div class="nav-item" onclick="switchTab('locate');closeSidebar()">
       <span class="nav-icon">🎯</span> Locate
     </div>
-    <div class="nav-item" onclick="switchTab('history')">
+    <div class="nav-item" onclick="switchTab('history');closeSidebar()">
       <span class="nav-icon">📋</span> History
     </div>
-    <div class="nav-item" onclick="switchTab('settings')">
+    <div class="nav-item" onclick="switchTab('settings');closeSidebar()">
       <span class="nav-icon">⚙️</span> Settings
     </div>
-    <div class="nav-item" onclick="switchTab('debug')">
+    <div class="nav-item" onclick="switchTab('debug');closeSidebar()">
       <span class="nav-icon">🔧</span> Debug
     </div>
   </div>
@@ -581,8 +662,8 @@ async function toggleBLE() {
 
 async function connectBLE() {
   if (!navigator.bluetooth) {
-    showToast('❌ Web Bluetooth không hỗ trợ! Dùng Chrome/Edge trên PC.', 'error');
-    logDebug('FAIL: navigator.bluetooth is undefined', 'err');
+    showBLEGuide();
+    logDebug('FAIL: navigator.bluetooth is undefined — ' + getBLEEnv(), 'err');
     return;
   }
   try {
@@ -1001,9 +1082,29 @@ function onFileData(event) {
 }
 
 async function fetchHistory() {
+  if (!isConnected) {
+    showToast('❌ Chưa kết nối BLE!', 'error');
+    document.getElementById('historyStatus').textContent = '⚠️ Chưa kết nối thiết bị.';
+    return;
+  }
   fileBuffer = [];
-  document.getElementById('historyStatus').textContent = 'Requesting...';
-  await sendCmd({cmd:'FETCH'});
+  document.getElementById('historyStatus').textContent = '⏳ Requesting...';
+  document.getElementById('historyList').innerHTML = '';
+
+  // Timeout fallback: if no response within 8 seconds, show error
+  const timeout = setTimeout(() => {
+    if (document.getElementById('historyStatus').textContent === '⏳ Requesting...') {
+      document.getElementById('historyStatus').textContent = '⚠️ Không nhận được phản hồi từ thiết bị.';
+      showToast('⏱️ Timeout: thiết bị không phản hồi', 'error');
+    }
+  }, 8000);
+
+  try {
+    await sendCmd({cmd:'FETCH'});
+  } catch(e) {
+    clearTimeout(timeout);
+    document.getElementById('historyStatus').textContent = '❌ Lỗi gửi lệnh: ' + e.message;
+  }
 }
 
 function renderHistory(json) {
@@ -1129,6 +1230,145 @@ function downloadFile(name, content, type) {
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([content], {type}));
   a.download = name; a.click();
+}
+
+// ═══════════════════════════════════════════════════════════
+// BLE ENVIRONMENT DETECTION & GUIDE
+// ═══════════════════════════════════════════════════════════
+function getBLEEnv() {
+  const ua = navigator.userAgent;
+  const isIOS = /iPad|iPhone|iPod/.test(ua);
+  const isAndroid = /Android/.test(ua);
+  const isChrome = /Chrome/.test(ua) && !/Edg/.test(ua);
+  const isEdge = /Edg/.test(ua);
+  const isSafari = /Safari/.test(ua) && !isChrome;
+  const isFirefox = /Firefox/.test(ua);
+  if (isIOS) return 'ios';
+  if (isAndroid && isChrome) return 'android-chrome';
+  if (isAndroid) return 'android-other';
+  if (isChrome || isEdge) return 'desktop-chrome';
+  if (isSafari) return 'desktop-safari';
+  if (isFirefox) return 'desktop-firefox';
+  return 'unknown';
+}
+
+function showBLEGuide() {
+  const env = getBLEEnv();
+  const guides = {
+    'ios': {
+      icon: '🍎',
+      title: 'iOS chưa hỗ trợ Web Bluetooth',
+      msg: 'Safari và Chrome trên iPhone/iPad chưa hỗ trợ Web Bluetooth.',
+      steps: [
+        '📲 Dùng app <b>WebBLE</b> hoặc <b>Bluefy</b> từ App Store — đây là browser hỗ trợ BLE trên iOS',
+        '🔗 Mở lại link này bên trong app đó',
+        '💡 Hoặc dùng PC/laptop với Chrome để kết nối'
+      ],
+      apps: [
+        { name: 'Bluefy', url: 'https://apps.apple.com/app/bluefy-web-ble-browser/id1492822055' },
+        { name: 'WebBLE', url: 'https://apps.apple.com/app/webble/id1193531073' }
+      ]
+    },
+    'android-chrome': {
+      icon: '🤖',
+      title: 'Cần bật Web Bluetooth trên Android',
+      msg: 'Chrome Android hỗ trợ Web Bluetooth nhưng cần bật flag thực nghiệm.',
+      steps: [
+        '1️⃣ Mở Chrome, vào địa chỉ: <code>chrome://flags</code>',
+        '2️⃣ Tìm kiếm: <b>bluetooth</b>',
+        '3️⃣ Bật <b>"Experimental Web Platform features"</b> → chọn <b>Enabled</b>',
+        '4️⃣ Bấm <b>Relaunch</b> khởi động lại Chrome',
+        '5️⃣ Quay lại trang này và thử kết nối'
+      ],
+      apps: []
+    },
+    'android-other': {
+      icon: '🤖',
+      title: 'Cần dùng Chrome trên Android',
+      msg: 'Browser hiện tại không hỗ trợ Web Bluetooth.',
+      steps: [
+        '📥 Cài <b>Google Chrome</b> từ Play Store',
+        '🔗 Mở link này trong Chrome',
+        '⚙️ Vào <code>chrome://flags</code> → bật <b>"Experimental Web Platform features"</b>'
+      ],
+      apps: [
+        { name: 'Chrome (Play Store)', url: 'https://play.google.com/store/apps/details?id=com.android.chrome' }
+      ]
+    },
+    'desktop-safari': {
+      icon: '🖥️',
+      title: 'Safari không hỗ trợ Web Bluetooth',
+      msg: 'Safari chưa triển khai Web Bluetooth API.',
+      steps: [
+        '🌐 Dùng <b>Google Chrome</b> hoặc <b>Microsoft Edge</b> trên Mac/PC',
+        '🔗 Mở lại link này trong Chrome hoặc Edge'
+      ],
+      apps: []
+    },
+    'desktop-firefox': {
+      icon: '🦊',
+      title: 'Firefox không hỗ trợ Web Bluetooth',
+      msg: 'Firefox chưa hỗ trợ Web Bluetooth API.',
+      steps: [
+        '🌐 Dùng <b>Google Chrome</b> hoặc <b>Microsoft Edge</b>',
+        '🔗 Mở lại link này trong Chrome hoặc Edge'
+      ],
+      apps: []
+    },
+    'unknown': {
+      icon: '❓',
+      title: 'Browser không hỗ trợ Web Bluetooth',
+      msg: 'Web Bluetooth yêu cầu Chrome/Edge (PC) hoặc Chrome Android (flag bật).',
+      steps: [
+        '🖥️ PC/Mac: dùng <b>Google Chrome</b> hoặc <b>Edge</b>',
+        '📱 Android: dùng <b>Chrome</b> + bật flag trong <code>chrome://flags</code>',
+        '🍎 iOS: dùng app <b>Bluefy</b> hoặc <b>WebBLE</b>'
+      ],
+      apps: []
+    }
+  };
+  const g = guides[env] || guides['unknown'];
+  const appsHtml = g.apps.length ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">` +
+    g.apps.map(a => `<a href="${a.url}" target="_blank" style="padding:7px 14px;border-radius:8px;background:rgba(0,212,255,.15);color:var(--accent);border:1px solid rgba(0,212,255,.3);font-size:12px;font-weight:600;text-decoration:none;">📲 ${a.name}</a>`).join('') +
+    `</div>` : '';
+  const stepsHtml = g.steps.map(s => `<li style="margin-bottom:8px;line-height:1.6;">${s}</li>`).join('');
+
+  const modal = document.createElement('div');
+  modal.id = 'bleGuideModal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);';
+  modal.innerHTML = `
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;max-width:440px;width:100%;padding:24px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.5);">
+      <button onclick="document.getElementById('bleGuideModal').remove()" style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,.08);border:none;color:var(--text-dim);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;">✕</button>
+      <div style="font-size:32px;margin-bottom:8px;">${g.icon}</div>
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;">${g.title}</div>
+      <div style="font-size:13px;color:var(--text-dim);margin-bottom:16px;">${g.msg}</div>
+      <ol style="padding-left:16px;margin:0;font-size:13px;color:var(--text-mid);">${stepsHtml}</ol>
+      ${appsHtml}
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);font-size:11px;color:var(--text-dim);">
+        🔒 Web Bluetooth yêu cầu HTTPS hoặc localhost. Trang phải được phục vụ qua HTTPS.
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if(e.target===modal) modal.remove(); });
+}
+
+// ═══════════════════════════════════════════════════════════
+// MOBILE SIDEBAR
+// ═══════════════════════════════════════════════════════════
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const isOpen = sidebar.classList.contains('open');
+  if (isOpen) { closeSidebar(); } else {
+    sidebar.classList.add('open');
+    overlay.classList.add('show');
+    document.getElementById('hamburger').textContent = '✕';
+  }
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+  document.getElementById('hamburger').textContent = '☰';
 }
 
 // ═══════════════════════════════════════════════════════════
