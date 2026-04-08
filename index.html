@@ -813,16 +813,22 @@ function onCmdNotification(event) {
 
     switch(data.cmd) {
 
-      // Hardware button pressed → Start INTERACTIVE scan (không lưu file)
+      // Hardware button pressed → Start scan (mode tùy firmware gửi)
       case 'S':
         if (data.status === 'ok' && !isScanning) {
-          logDebug('🔘 Hardware button → START (Interactive mode)', 'info');
-          setHWIndicator(true, 'HW ▶ START');
-          currentMode = 'std'; // Hardware button luôn là Interactive
-          document.getElementById('modeStd').classList.add('active');
-          document.getElementById('modeBatch').classList.remove('active');
+          const isBatch = data.mode === 'batch';
+          currentMode = isBatch ? 'batch' : 'std';
+          document.getElementById('modeStd').classList.toggle('active', !isBatch);
+          document.getElementById('modeBatch').classList.toggle('active', isBatch);
+          setHWIndicator(true, isBatch ? 'HW ▶ BATCH' : 'HW ▶ START');
           setIsScanning(true);
-          showToast('🔘 HW Button: Quét Interactive (không lưu History)', 'hw');
+          if (isBatch) {
+            logDebug('🔘 Hardware button → START BATCH MODE', 'info');
+            showToast('🔘 HW Button: Quét Batch (có lưu History)', 'hw');
+          } else {
+            logDebug('🔘 Hardware button → START Interactive mode', 'info');
+            showToast('🔘 HW Button: Quét Interactive (không lưu History)', 'hw');
+          }
         }
         break;
 
