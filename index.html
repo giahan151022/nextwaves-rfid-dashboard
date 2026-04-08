@@ -623,7 +623,7 @@ const BLE_CONFIG = {
 // ═══════════════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════════════
-let bleDevice = null, bleServer = null, cmdChar = null, fileDataChar = null;
+let bleDevice = null, bleServer = null, cmdChar = null, fileCtrlChar = null, fileDataChar = null;
 let isConnected = false;
 let isScanning = false;
 let isBatchMode = false;
@@ -693,6 +693,14 @@ async function connectBLE() {
     cmdChar = await service.getCharacteristic(BLE_CONFIG.cmdCharUUID);
     logDebug('CMD Char found ✓', 'info');
 
+    // File Control characteristic (0xFF02) — trigger send_file
+    try {
+      fileCtrlChar = await service.getCharacteristic(BLE_CONFIG.fileCtrlUUID);
+      logDebug('File Control Char found ✓', 'info');
+    } catch(e) {
+      logDebug('File Control Char không tìm thấy (bỏ qua): ' + (e?.message || 'unknown'), 'info');
+    }
+
     // File Data characteristic (optional)
     try {
       fileDataChar = await service.getCharacteristic(BLE_CONFIG.fileDataUUID);
@@ -754,6 +762,7 @@ async function disconnectBLE() {
 
 function onDisconnected() {
   isConnected = false; isScanning = false;
+  cmdChar = null; fileCtrlChar = null; fileDataChar = null;
   setBLEUI('disconnected');
   setControlsEnabled(false);
   setScanUI(false);
@@ -1104,23 +1113,34 @@ async function fetchHistory() {
     document.getElementById('historyStatus').textContent = '⚠️ Chưa kết nối thiết bị.';
     return;
   }
+  if (!fileCtrlChar) {
+    showToast('❌ Không tìm thấy File Control characteristic!', 'error');
+    document.getElementById('historyStatus').textContent = '❌ File Control char (0xFF02) không khả dụng.';
+    return;
+  }
   fileBuffer = [];
-  document.getElementById('historyStatus').textContent = '⏳ Requesting...';
   document.getElementById('historyList').innerHTML = '';
+  document.getElementById('historyStatus').textContent = '⏳ Requesting...';
+  logDebug('Gửi lệnh send_file → 0xFF02...', 'info');
 
-  // Timeout fallback: if no response within 8 seconds, show error
   const timeout = setTimeout(() => {
     if (document.getElementById('historyStatus').textContent === '⏳ Requesting...') {
       document.getElementById('historyStatus').textContent = '⚠️ Không nhận được phản hồi từ thiết bị.';
       showToast('⏱️ Timeout: thiết bị không phản hồi', 'error');
     }
-  }, 8000);
+  }, 10000);
 
   try {
-    await sendCmd({cmd:'FETCH'});
+    // Firmware kiểm tra strstr(cmd, "send_file") trên characteristic 0xFF02
+    const enc = new TextEncoder().encode('send_file');
+    await fileCtrlChar.writeValue(enc);
+    logDebug('TX (FileCtrl 0xFF02): send_file', 'tx');
   } catch(e) {
     clearTimeout(timeout);
-    document.getElementById('historyStatus').textContent = '❌ Lỗi gửi lệnh: ' + e.message;
+    const msg = e?.message || e?.toString?.() || 'unknown';
+    document.getElementById('historyStatus').textContent = '❌ Lỗi: ' + msg;
+    showToast('❌ Lỗi gửi lệnh: ' + msg, 'error');
+    logDebug('File Control write error: ' + msg, 'err');
   }
 }
 
