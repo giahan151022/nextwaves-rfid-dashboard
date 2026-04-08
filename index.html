@@ -723,7 +723,11 @@ function onCmdNotification(event) {
         break;
 
       case 'GT':
-        if (data.val) document.getElementById('infoTemp').textContent = data.val + '°C';
+        if (data.status === 'err') {
+          document.getElementById('infoTemp').textContent = 'Lỗi!';
+        } else if (data.val !== undefined) {
+          document.getElementById('infoTemp').textContent = data.val + '°C';
+        }
         break;
 
       case 'GB':
