@@ -723,7 +723,7 @@ function onCmdNotification(event) {
         break;
 
       case 'GT':
-        if (data.val !== undefined) document.getElementById('infoTemp').textContent = data.val + '°C';
+        if (data.val) document.getElementById('infoTemp').textContent = data.val + '°C';
         break;
 
       case 'GB':
