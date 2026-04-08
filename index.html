@@ -472,12 +472,18 @@ input[type=range] { flex:1; cursor:pointer; accent-color:var(--accent); }
     <div class="tab-panel" id="tab-history">
       <div class="card">
         <div class="card-title">📋 Batch Scan History</div>
-        <div style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--text-mid);line-height:1.7;">
-          💡 <b style="color:var(--accent)">Lưu ý:</b> History chỉ lưu dữ liệu từ <b>Batch Mode</b>.<br>
-          Để có dữ liệu: Tab Scanner → chọn <b>🗂️ Batch</b> → START SCAN → STOP SCAN → quay lại đây Fetch.
+        <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--text-mid);line-height:1.8;">
+          ⚠️ <b style="color:var(--warning)">Lưu ý quan trọng:</b><br>
+          • <b>Hardware button</b> trên thiết bị = <b>Interactive mode</b> → <b style="color:var(--danger)">KHÔNG lưu History</b><br>
+          • Để có History: phải dùng <b style="color:var(--accent)">🗂️ Batch mode từ Web UI</b><br>
+          <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(245,158,11,.2);">
+            📋 <b>Cách dùng:</b> Tab Scanner → chọn <b>🗂️ Batch</b> → <b>START SCAN</b> (từ web) → quét xong → <b>STOP SCAN</b> → quay lại đây Fetch
+          </div>
         </div>
-        <div style="display:flex;gap:8px;margin-bottom:14px;">
-          <button class="btn btn-outline btn-sm" onclick="switchTab('scanner');setMode('batch')" style="font-size:11px;">🗂️ Mở Batch Mode</button>
+        <div style="margin-bottom:14px;">
+          <button class="btn btn-batch" onclick="switchTab('scanner');setMode('batch')" style="font-size:12px;">
+            🗂️ Mở Batch Mode ngay
+          </button>
         </div>
         <div style="display:flex;gap:8px;margin-bottom:16px;">
           <button class="btn btn-primary" onclick="fetchHistory()" id="fetchBtn" disabled>📥 Fetch From Device</button>
@@ -807,23 +813,26 @@ function onCmdNotification(event) {
 
     switch(data.cmd) {
 
-      // ✅ FIX: Hardware button pressed → Start scan
+      // Hardware button pressed → Start INTERACTIVE scan (không lưu file)
       case 'S':
         if (data.status === 'ok' && !isScanning) {
-          logDebug('🔘 Hardware button → START SCAN', 'info');
+          logDebug('🔘 Hardware button → START (Interactive mode)', 'info');
           setHWIndicator(true, 'HW ▶ START');
+          currentMode = 'std'; // Hardware button luôn là Interactive
+          document.getElementById('modeStd').classList.add('active');
+          document.getElementById('modeBatch').classList.remove('active');
           setIsScanning(true);
-          showToast('🔘 Hardware button: Bắt đầu quét!', 'hw');
+          showToast('🔘 HW Button: Quét Interactive (không lưu History)', 'hw');
         }
         break;
 
-      // ✅ FIX: Hardware button stop → Stop scan
+      // Hardware button stop → Stop scan
       case 'X':
         if (data.status === 'ok' && isScanning) {
           logDebug('🔘 Hardware button → STOP SCAN', 'info');
           setHWIndicator(false);
           setIsScanning(false);
-          showToast('🔘 Hardware button: Dừng quét!', 'hw');
+          showToast('🔘 HW Button: Dừng quét', 'hw');
         }
         break;
 
@@ -956,7 +965,12 @@ function processLiveTags(tagList) {
   const now = new Date();
   tagList.forEach(t => {
     const epc = t.epc || t.e;
-    const rssi = t.rssi !== undefined ? t.rssi : (t.r || 0);
+    // Firmware gửi RSSI dạng uint8 (0-255), cần convert sang int8 (-128 đến 127)
+    // Ví dụ: firmware gửi 79 → thực ra là -79 dBm (two's complement: 256-79=177? không)
+    // ESP32 ZK E710: RSSI là int8_t cast sang JSON number, nếu > 0 thì bị lỗi unsigned
+    let rssiRaw = t.rssi !== undefined ? t.rssi : (t.r || 0);
+    // Nếu firmware vô tình gửi unsigned (> 0), convert về signed
+    const rssi = rssiRaw > 0 ? -(rssiRaw) : rssiRaw;
     if (!epc) return;
     totalReads++;
     if (tags.has(epc)) {
@@ -1071,7 +1085,8 @@ async function stopLocate() {
 
 function handleLocateResult(data) {
   if (!locating) return;
-  const rssi = data.rssi;
+  const rssiRaw = data.rssi;
+  const rssi = rssiRaw > 0 ? -rssiRaw : rssiRaw; // fix unsigned→signed
   updateSignal(rssi);
   const log = document.getElementById('locateLog');
   const entry = document.createElement('div');
@@ -1109,7 +1124,7 @@ function onFileData(event) {
   } else if (seq === 0xFFFE) {
     const blob = new Blob(fileBuffer, {type:'application/json'});
     blob.text().then(text => {
-      logDebug('File transfer DONE, size: ' + text.length, 'info');
+      logDebug('📄 File RAW (' + text.length + ' bytes): ' + text.substring(0, 300), 'info');
       renderHistory(text);
     });
     document.getElementById('historyStatus').textContent = '✅ Transfer complete';
@@ -1162,8 +1177,8 @@ function renderHistory(json) {
     const data = JSON.parse(json);
     const list = document.getElementById('historyList');
 
-    // Support both {tags:[...]} and {epcs:[...]} formats
-    const tagList = data.tags || data.epcs || data.epc_list || [];
+    // Firmware lưu key "epcs" (không phải "tags")
+    const tagList = data.epcs || data.tags || data.epc_list || [];
 
     if (tagList.length === 0) {
       list.innerHTML = '<div style="color:var(--text-dim);text-align:center;padding:30px;">' +
