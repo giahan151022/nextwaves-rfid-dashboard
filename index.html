@@ -472,6 +472,13 @@ input[type=range] { flex:1; cursor:pointer; accent-color:var(--accent); }
     <div class="tab-panel" id="tab-history">
       <div class="card">
         <div class="card-title">📋 Batch Scan History</div>
+        <div style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--text-mid);line-height:1.7;">
+          💡 <b style="color:var(--accent)">Lưu ý:</b> History chỉ lưu dữ liệu từ <b>Batch Mode</b>.<br>
+          Để có dữ liệu: Tab Scanner → chọn <b>🗂️ Batch</b> → START SCAN → STOP SCAN → quay lại đây Fetch.
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:14px;">
+          <button class="btn btn-outline btn-sm" onclick="switchTab('scanner');setMode('batch')" style="font-size:11px;">🗂️ Mở Batch Mode</button>
+        </div>
         <div style="display:flex;gap:8px;margin-bottom:16px;">
           <button class="btn btn-primary" onclick="fetchHistory()" id="fetchBtn" disabled>📥 Fetch From Device</button>
           <button class="btn btn-outline btn-sm" onclick="clearHistory()">🗑️ Clear</button>
@@ -1151,19 +1158,40 @@ async function fetchHistory() {
 
 function renderHistory(json) {
   try {
+    logDebug('History JSON (' + json.length + ' bytes): ' + json.substring(0, 200), 'info');
     const data = JSON.parse(json);
     const list = document.getElementById('historyList');
-    if (!data.tags || data.tags.length === 0) { list.innerHTML = '<div style="color:var(--text-dim);text-align:center;padding:20px;">No data</div>'; return; }
-    list.innerHTML = data.tags.map((epc, i) => `
-      <div class="history-tag">
-        <span style="color:var(--text-dim);font-size:12px;">${i+1}</span>
-        <span class="history-epc">${epc}</span>
-        <button class="btn btn-outline btn-sm" onclick="locateTag('${epc}')" style="padding:3px 8px;font-size:11px;">🎯 Find</button>
-      </div>
-    `).join('');
-    document.getElementById('historyStatus').textContent = `${data.tags.length} tags loaded`;
+
+    // Support both {tags:[...]} and {epcs:[...]} formats
+    const tagList = data.tags || data.epcs || data.epc_list || [];
+
+    if (tagList.length === 0) {
+      list.innerHTML = '<div style="color:var(--text-dim);text-align:center;padding:30px;">' +
+        '<div style="font-size:32px;margin-bottom:8px;opacity:.3">📭</div>' +
+        '<div>Không có dữ liệu</div>' +
+        '<div style="font-size:11px;margin-top:8px;opacity:.6">Hãy quét ở Batch Mode trước rồi Fetch lại</div>' +
+        '</div>';
+      return;
+    }
+
+    list.innerHTML = tagList.map((item, i) => {
+      // Support both string EPC and object {epc, rssi}
+      const epc = typeof item === 'string' ? item : (item.epc || item.e || JSON.stringify(item));
+      const rssi = typeof item === 'object' ? (item.rssi || item.r || '') : '';
+      return `
+        <div class="history-tag">
+          <span style="color:var(--text-dim);font-size:12px;">${i+1}</span>
+          <span class="history-epc">${epc}</span>
+          ${rssi ? `<span style="font-size:11px;color:var(--text-dim)">${rssi} dBm</span>` : ''}
+          <button class="btn btn-outline btn-sm" onclick="locateTag('${epc}')" style="padding:3px 8px;font-size:11px;">🎯 Find</button>
+        </div>`;
+    }).join('');
+    document.getElementById('historyStatus').textContent = `✅ ${tagList.length} tags loaded`;
   } catch(e) {
-    document.getElementById('historyList').innerHTML = '<div style="color:var(--danger);padding:10px;">Parse error: ' + e.message + '</div>';
+    logDebug('History parse error: ' + e.message + ' | raw: ' + json.substring(0, 300), 'err');
+    document.getElementById('historyList').innerHTML =
+      '<div style="color:var(--danger);padding:10px;font-size:12px;">⚠️ Parse error: ' + e.message +
+      '<br><span style="color:var(--text-dim);font-family:monospace;font-size:11px;">' + json.substring(0, 200) + '</span></div>';
   }
 }
 
