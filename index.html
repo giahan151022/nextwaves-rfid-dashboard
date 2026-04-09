@@ -1750,17 +1750,19 @@
     // ZK E710 RSSI HELPERS — dùng thống nhất toàn bộ dashboard
     // RSSI sau convert luôn là số âm: -68 dBm, -70 dBm...
     // Signal %: -68 → 32%, -50 → 50%, -30 → 70% (rssi + 100)
-    // Ngưỡng màu: > -60 = tốt (xanh), > -75 = trung (vàng), còn lại = yếu (đỏ)
-    // ═══════════════════════════════════════════════════════════
+    // Ngưỡng màu UHF RFID ZK E710:
+    // > -70 dBm  = Tốt (xanh)   — gần anten
+    // > -85 dBm  = Trung (vàng)  — khoảng cách vừa
+    // <= -85 dBm = Yếu (đỏ)     — xa anten
     function rssiToPct(rssi) {
       if (rssi <= -100) return 0;
       return Math.min(100, Math.max(0, rssi + 100));
     }
     function rssiToColor(rssi) {
-      return rssi > -60 ? 'var(--success)' : rssi > -75 ? 'var(--warning)' : 'var(--danger)';
+      return rssi > -70 ? 'var(--success)' : rssi > -85 ? 'var(--warning)' : 'var(--danger)';
     }
     function rssiToClass(rssi) {
-      return rssi > -60 ? 'rssi-good' : rssi > -75 ? 'rssi-mid' : 'rssi-bad';
+      return rssi > -70 ? 'rssi-good' : rssi > -85 ? 'rssi-mid' : 'rssi-bad';
     }
 
     function renderTagTable() {
