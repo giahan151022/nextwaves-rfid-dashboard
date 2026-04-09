@@ -1775,7 +1775,7 @@
         tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div><div>No tags detected</div></div></td></tr>';
         return;
       }
-      const sorted = [...tags.values()].sort((a, b) => b.rssi - a.rssi);
+      const sorted = [...tags.values()].sort((a, b) => b.lastSeen - a.lastSeen);
       tbody.innerHTML = sorted.map((t, i) => {
         const rssi = t.rssi;
         const pct = rssiToPct(rssi);
