@@ -1730,7 +1730,7 @@
         // ZK E710: firmware gửi RSSI là số âm đúng (ví dụ -68, -70)
         // Nếu gửi số dương (bug unsigned), tự đổi về âm
         let rssiRaw = t.rssi !== undefined ? t.rssi : (t.r || 0);
-        const rssi = rssiRaw > 0 ? -rssiRaw : rssiRaw;
+        const rssi = Math.abs(rssiRaw);
         if (!epc) return;
         totalReads++;
         if (tags.has(epc)) {
@@ -1755,14 +1755,14 @@
     // > -85 dBm  = Trung (vàng)  — khoảng cách vừa
     // <= -85 dBm = Yếu (đỏ)     — xa anten
     function rssiToPct(rssi) {
-      if (rssi <= -100) return 0;
-      return Math.min(100, Math.max(0, rssi + 100));
+      if (rssi <= 0) return 0;
+      return Math.min(100, Math.round(rssi));
     }
     function rssiToColor(rssi) {
-      return rssi > -30 ? 'var(--success)' : rssi > -70 ? 'var(--warning)' : 'var(--danger)';
+      return rssi >= 60 ? 'var(--success)' : rssi >= 35 ? 'var(--warning)' : 'var(--danger)';
     }
     function rssiToClass(rssi) {
-      return rssi > -30 ? 'rssi-good' : rssi > -70 ? 'rssi-mid' : 'rssi-bad';
+      return rssi >= 60 ? 'rssi-good' : rssi >= 35 ? 'rssi-mid' : 'rssi-bad';
     }
 
     function renderTagTable() {
@@ -1858,7 +1858,7 @@
       await sendCmd({ cmd: 'X' });
       document.getElementById('locateBtn').disabled = false;
       document.getElementById('stopLocateBtn').disabled = true;
-      updateSignal(-100);
+      updateSignal(0);
       showToast('Stopped locate', 'info');
     }
 
@@ -1871,7 +1871,7 @@
       entry.className = 'locate-log-entry';
       const pct = rssiToPct(rssi);
       const col = rssiToColor(rssi);
-      entry.innerHTML = `<span style="color:var(--text-dim)">${new Date().toLocaleTimeString()}</span> RSSI: <span style="color:${col}">${Math.abs(rssi)}</span> [${pct}%]`;
+      entry.innerHTML = `<span style="color:var(--text-dim)">${new Date().toLocaleTimeString()}</span> RSSI: <span style="color:${col}">${rssi}</span> [${pct}%]`;
       log.insertBefore(entry, log.firstChild);
       if (log.children.length > 50) log.removeChild(log.lastChild);
     }
@@ -1884,7 +1884,7 @@
       const color = rssiToColor(rssi);
       circle.style.setProperty('--pct', pct + '%');
       pctEl.textContent = pct + '%';
-      rssiEl.textContent = (rssi === -100 ? '---' : Math.abs(rssi) + ' raw');
+      rssiEl.textContent = (rssi === 0 ? '---' : rssi + ' raw');
       rssiEl.style.color = color;
       pctEl.style.color = color;
     }
