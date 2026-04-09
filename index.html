@@ -1748,6 +1748,59 @@
       updateStats();
     }
 
+    // ═══════════════════════════════════════════════════════════
+    // ZK E710 RSSI CONVERSION
+    // E710 gửi RSSI raw 0-100 (unsigned)
+    // Scanner mode: firmware cast sai → số âm (-64 thực ra là 64)
+    // Find mode: số dương đúng (66, 69, 72)
+    // Công thức: lấy Math.abs() để luôn ra số dương = %
+    // ═══════════════════════════════════════════════════════════
+    function rssiToPct(rssi) {
+      if (rssi === -100) return 0;           // timeout signal
+      const raw = Math.abs(rssi);            // -64 → 64, 69 → 69
+      return Math.min(100, Math.max(0, raw));
+    }
+    function rssiToColor(rssi) {
+      const raw = Math.abs(rssi);
+      return raw >= 60 ? 'var(--success)' : raw >= 40 ? 'var(--warning)' : 'var(--danger)';
+    }
+    function rssiToClass(rssi) {
+      const raw = Math.abs(rssi);
+      return raw >= 60 ? 'rssi-good' : raw >= 40 ? 'rssi-mid' : 'rssi-bad';
+    }
+
+    function renderTagTable() {
+      const tbody = document.getElementById('tagTableBody');
+      if (tags.size === 0) {
+        tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div><div>No tags detected</div></div></td></tr>';
+        return;
+      }
+      const sorted = [...tags.values()].sort((a, b) => b.rssi - a.rssi);
+      tbody.innerHTML = sorted.map((t, i) => {
+        const rssi = t.rssi;
+        const pct = rssiToPct(rssi);
+        const rssiClass = rssiToClass(rssi);
+        const barColor = rssiToColor(rssi);
+        const t2 = t.lastSeen.toLocaleTimeString();
+        return `<tr>
+      <td style="color:var(--text-dim)">${i + 1}</td>
+      <td class="epc-cell">${t.epc}</td>
+      <td class="rssi-cell ${rssiClass}">${rssi} dBm</td>
+      <td>
+        <div class="rssi-bar-wrap">
+          <div class="rssi-bar"><div class="rssi-bar-fill" style="width:${pct}%;background:${barColor}"></div></div>
+          <span style="font-size:11px;color:var(--text-dim)">${pct}%</span>
+        </div>
+      </td>
+      <td><span class="count-badge">${t.count}</span></td>
+      <td style="color:var(--text-dim);font-size:12px;">${t2}</td>
+      <td>
+        <button class="btn btn-outline btn-sm" onclick="locateTag('${t.epc}')" style="padding:3px 8px;font-size:11px;">🎯</button>
+      </td>
+    </tr>`;
+      }).join('');
+    }
+
     function renderTagTable() {
       const tbody = document.getElementById('tagTableBody');
       if (tags.size === 0) {
@@ -1847,14 +1900,14 @@
 
     function handleLocateResult(data) {
       if (!locating) return;
-      const rssiRaw = data.rssi;
-      const rssi = rssiRaw > 0 ? -rssiRaw : rssiRaw; // fix unsigned→signed
+      const rssi = data.rssi; // E710: số dương (66,69,72) hoặc -100 (timeout)
       updateSignal(rssi);
       const log = document.getElementById('locateLog');
       const entry = document.createElement('div');
       entry.className = 'locate-log-entry';
-      const pct = Math.min(100, Math.max(0, rssi + 100));
-      entry.innerHTML = `<span style="color:var(--text-dim)">${new Date().toLocaleTimeString()}</span> RSSI: <span style="color:${rssi > -60 ? 'var(--success)' : rssi > -75 ? 'var(--warning)' : 'var(--danger)'}">${rssi} dBm</span> [${pct}%]`;
+      const pct = rssiToPct(rssi);
+      const col = rssiToColor(rssi);
+      entry.innerHTML = `<span style="color:var(--text-dim)">${new Date().toLocaleTimeString()}</span> RSSI: <span style="color:${col}">${Math.abs(rssi)}</span> [${pct}%]`;
       log.insertBefore(entry, log.firstChild);
       if (log.children.length > 50) log.removeChild(log.lastChild);
     }
@@ -1863,11 +1916,11 @@
       const circle = document.getElementById('signalCircle');
       const pctEl = document.getElementById('signalPct');
       const rssiEl = document.getElementById('locateRssi');
-      const pct = rssi <= -100 ? 0 : Math.min(100, Math.max(0, rssi + 100));
+      const pct = rssiToPct(rssi);
+      const color = rssiToColor(rssi);
       circle.style.setProperty('--pct', pct + '%');
       pctEl.textContent = pct + '%';
-      rssiEl.textContent = rssi + ' dBm';
-      const color = rssi > -60 ? 'var(--success)' : rssi > -75 ? 'var(--warning)' : 'var(--danger)';
+      rssiEl.textContent = (rssi === -100 ? '---' : Math.abs(rssi) + ' raw');
       rssiEl.style.color = color;
       pctEl.style.color = color;
     }
