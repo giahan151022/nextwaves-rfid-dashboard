@@ -1123,10 +1123,12 @@
         <div class="card" style="margin-bottom: 12px; padding: 12px 20px;">
           <div style="display: flex; align-items: center; gap: 10px;">
             <span style="font-size: 18px;">🔍</span>
-            <input type="text" id="tagSearchInput" placeholder="Tìm kiếm EPC (Hex)..." oninput="renderTagTable()"
+            <input type="text" id="tagSearchInput" placeholder="Tìm kiếm EPC (Hex)..."
+              data-i18n-placeholder="search_placeholder" oninput="renderTagTable()"
               style="flex: 1; background: transparent; border: none; color: var(--text); outline: none; font-family: 'JetBrains Mono', monospace; font-size: 14px;">
             <button class="btn btn-outline btn-sm"
-              onclick="document.getElementById('tagSearchInput').value=''; renderTagTable();"><span data-i18n="clear">CLEAR</span></button>
+              onclick="document.getElementById('tagSearchInput').value=''; renderTagTable();"><span
+                data-i18n="clear">CLEAR</span></button>
           </div>
         </div>
 
@@ -1476,7 +1478,9 @@
         "append": "Nối dòng",
         "debug_title": "🔧 Log giao tiếp BLE",
         "download": "📥 Tải file",
-        "autoscroll": "Tự đồng cuộn"
+        "autoscroll": "Tự đồng cuộn",
+        "search_placeholder": "Tìm kiếm EPC (Hex)...",
+        "no_tags_search": "Không tìm thấy thẻ khớp"
       },
       "en": {
         "history_instructions": `
@@ -1558,7 +1562,9 @@
         "append": "Append",
         "debug_title": "🔧 BLE Communication Log",
         "download": "📥 Download",
-        "autoscroll": "Auto-scroll"
+        "autoscroll": "Auto-scroll",
+        "search_placeholder": "Search EPC (Hex)...",
+        "no_tags_search": "No tags match the search"
       }
     };
 
@@ -1601,6 +1607,12 @@
         const name = activeTabId.replace('tab-', '');
         document.getElementById('topbarTitle').textContent = dynTabTitles[name] || name;
       }
+      // Update placeholders
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+      });
+      // Re-render table to update language of empty state
+      if (typeof renderTagTable === 'function') renderTagTable();
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -1746,13 +1758,13 @@
           || eMsg.includes('User cancelled') || eMsg.includes('no device')) {
           // Người dùng đóng dialog hoặc không chọn thiết bị → im lặng
         } else if (eName === 'SecurityError' || eMsg.includes('secure') || eMsg.includes('https')) {
-          showToast('❌ Bị chặn: Cần HTTPS', 'error');
+          showToast(t('err_https'), 'error');
         } else if (eName === 'NetworkError') {
           showToast(t('err_gatt'), 'error');
         } else if (eName === 'NotSupportedError') {
           showBLEGuide();
         } else {
-          showToast('❌ ' + (eMsg || eName || 'Lỗi không xác định'), 'error');
+          showToast('❌ ' + (eMsg || eName || t('err_gatt')), 'error');
         }
       }
     }
@@ -1771,7 +1783,7 @@
       setScanUI(false);
       setHWIndicator(false);
       logDebug('Disconnected', 'info');
-      showToast('🔌 Disconnected', 'error');
+      showToast('🔌 ' + t('msg_disconn'), 'error');
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -1857,7 +1869,7 @@
 
           case 'GT':
             if (data.status === 'err') {
-              document.getElementById('infoTemp').textContent = 'Lỗi!';
+              document.getElementById('infoTemp').textContent = currentLang === 'en' ? 'Error!' : 'Lỗi!';
             } else if (data.val !== undefined) {
               document.getElementById('infoTemp').textContent = data.val + '°C';
             }
@@ -2033,7 +2045,7 @@
         tbody.innerHTML = `<tr><td colspan="7">
           <div class="empty-state">
             <div class="empty-icon">${searchQuery ? '❓' : '📭'}</div>
-            <div>${searchQuery ? 'Không tìm thấy thẻ khớp với từ khóa' : 'No tags detected'}</div>
+            <div>${searchQuery ? t('no_tags_search') : t('no_tags')}</div>
           </div>
         </td></tr>`;
         return;
@@ -2123,7 +2135,7 @@
 
     async function startLocate() {
       const epc = document.getElementById('locateEpc').value.trim();
-      if (!epc) { showToast('Nhập EPC cần tìm', 'error'); return; }
+      if (!epc) { showToast(t('find'), 'error'); return; }
       locating = true;
       document.getElementById('locateEpcDisplay').textContent = t('find_status_target') + epc;
       document.getElementById('locateBtn').disabled = true;
@@ -2138,7 +2150,7 @@
       document.getElementById('locateBtn').disabled = false;
       document.getElementById('stopLocateBtn').disabled = true;
       updateSignal(0);
-      showToast('Stopped locate', 'info');
+      showToast(t('stop') + ' locate', 'info');
     }
 
     function handleLocateResult(data) {
@@ -2178,14 +2190,14 @@
       if (seq === 0xFFFF) {
         fileBuffer = [];
         logDebug('File transfer START', 'info');
-        document.getElementById('historyStatus').textContent = '📥 Receiving...';
+        document.getElementById('historyStatus').textContent = currentLang === 'vi' ? '📥 Đang nhận...' : '📥 Receiving...';
       } else if (seq === 0xFFFE) {
         const blob = new Blob(fileBuffer, { type: 'application/json' });
         blob.text().then(text => {
           logDebug('📄 File RAW (' + text.length + ' bytes): ' + text.substring(0, 300), 'info');
           renderHistory(text);
         });
-        document.getElementById('historyStatus').textContent = '✅ Transfer complete';
+        document.getElementById('historyStatus').textContent = currentLang === 'vi' ? '✅ Nhận xong' : '✅ Transfer complete';
       } else {
         const chunk = buf.buffer.slice(2);
         fileBuffer.push(chunk);
@@ -2194,24 +2206,24 @@
 
     async function fetchHistory() {
       if (!isConnected) {
-        showToast('❌ Chưa kết nối BLE!', 'error');
-        document.getElementById('historyStatus').textContent = '⚠️ Chưa kết nối thiết bị.';
+        showToast('❌ ' + t('connect_ble'), 'error');
+        document.getElementById('historyStatus').textContent = '⚠️ ' + (currentLang === 'vi' ? 'Chưa kết nối thiết bị.' : 'Device not connected.');
         return;
       }
       if (!fileCtrlChar) {
-        showToast('❌ Không tìm thấy File Control characteristic!', 'error');
-        document.getElementById('historyStatus').textContent = '❌ File Control char (0xFF02) không khả dụng.';
+        showToast('❌ File Control char not found!', 'error');
+        document.getElementById('historyStatus').textContent = '❌ File Control char (0xFF02) ' + (currentLang === 'vi' ? 'không khả dụng.' : 'not available.');
         return;
       }
       fileBuffer = [];
       document.getElementById('historyList').innerHTML = '';
-      document.getElementById('historyStatus').textContent = '⏳ Requesting...';
-      logDebug('Gửi lệnh send_file → 0xFF02...', 'info');
+      document.getElementById('historyStatus').textContent = '⏳ ' + (currentLang === 'vi' ? 'Đang yêu cầu...' : 'Requesting...');
+      logDebug('Sending send_file → 0xFF02...', 'info');
 
       const timeout = setTimeout(() => {
-        if (document.getElementById('historyStatus').textContent === '⏳ Requesting...') {
-          document.getElementById('historyStatus').textContent = '⚠️ Không nhận được phản hồi từ thiết bị.';
-          showToast('⏱️ Timeout: thiết bị không phản hồi', 'error');
+        if (document.getElementById('historyStatus').textContent.includes('Requesting') || document.getElementById('historyStatus').textContent.includes('yêu cầu')) {
+          document.getElementById('historyStatus').textContent = '⚠️ ' + (currentLang === 'vi' ? 'Không nhận được phản hồi từ thiết bị.' : 'No response from device.');
+          showToast('⏱️ ' + (currentLang === 'vi' ? 'Timeout: thiết bị không phản hồi' : 'Timeout: device not responding'), 'error');
         }
       }, 10000);
 
@@ -2223,8 +2235,8 @@
       } catch (e) {
         clearTimeout(timeout);
         const msg = e?.message || e?.toString?.() || 'unknown';
-        document.getElementById('historyStatus').textContent = '❌ Lỗi: ' + msg;
-        showToast('❌ Lỗi gửi lệnh: ' + msg, 'error');
+        document.getElementById('historyStatus').textContent = '❌ ' + msg;
+        showToast('❌ ' + (currentLang === 'vi' ? 'Lỗi gửi lệnh: ' : 'Command error: ') + msg, 'error');
         logDebug('File Control write error: ' + msg, 'err');
       }
     }
@@ -2255,7 +2267,7 @@
           <button class="btn btn-outline btn-sm" onclick="locateTag('${epc}')" style="padding:3px 8px;font-size:11px;">🎯 Find</button>
         </div>`;
         }).join('');
-        document.getElementById('historyStatus').textContent = `✅ ${tagList.length} tags loaded`;
+        document.getElementById('historyStatus').textContent = `✅ ${tagList.length} ` + (currentLang === 'vi' ? 'thẻ đã tải' : 'tags loaded');
       } catch (e) {
         logDebug('History parse error: ' + e.message + ' | raw: ' + json.substring(0, 300), 'err');
         document.getElementById('historyList').innerHTML =
