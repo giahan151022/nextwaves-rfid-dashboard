@@ -1419,8 +1419,8 @@
 
         bleDevice = await navigator.bluetooth.requestDevice({
           filters: [
-            { namePrefix: 'Nextwaves' },
-            { namePrefix: 'NRH-10' }
+            { namePrefix: 'Nextwaves', services: [BLE_CONFIG.serviceUUID] },
+            { namePrefix: 'NRH-10', services: [BLE_CONFIG.serviceUUID] }
           ],
           optionalServices: [
             BLE_CONFIG.serviceUUID,   // 0x00FF — service chính
