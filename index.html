@@ -1082,9 +1082,10 @@
     <div class="topbar">
       <div class="topbar-title" id="topbarTitle">📡 Scanner</div>
       <div class="topbar-status">
-        <select id="langSelect" onchange="toggleLang(this.value)" style="background:var(--bg-card2);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:2px 4px;font-size:12px;margin-right:10px;cursor:pointer;outline:none;">
-          <option value="vi">🇻🇳 VI</option>
-          <option value="en">🇬🇧 EN</option>
+        <select id="langSelect" onchange="toggleLang(this.value)"
+          style="background:var(--bg-card2);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:2px 4px;font-size:12px;margin-right:10px;cursor:pointer;outline:none;">
+          <option value="vi">VI</option>
+          <option value="en">EN</option>
         </select>
         <div class="hw-btn-indicator" id="hwIndicator">
           <div class="dot"></div>
@@ -1401,7 +1402,7 @@
         hw_stop: `🔘 HW Button: Scan Stopped`,
       }
     };
-    
+
     let currentLang = localStorage.getItem('lang') || 'vi';
 
     function t(key) {
