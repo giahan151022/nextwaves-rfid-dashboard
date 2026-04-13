@@ -1107,15 +1107,6 @@
         </div>
 
         <div class="scan-controls">
-          <div class="card" style="margin-bottom: 12px; padding: 12px 20px;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="font-size: 18px;">🔍</span>
-              <input type="text" id="tagSearchInput" placeholder="Tìm kiếm EPC (Hex)..." oninput="renderTagTable()"
-                style="flex: 1; background: transparent; border: none; color: var(--text); outline: none; font-family: 'JetBrains Mono', monospace; font-size: 14px;">
-              <button class="btn btn-outline btn-sm"
-                onclick="document.getElementById('tagSearchInput').value=''; renderTagTable();">Xóa</button>
-            </div>
-          </div>
           <button class="btn btn-primary" id="scanBtn" onclick="toggleScan()" disabled>
             <span>▶</span> <span id="scanBtnText" data-i18n="start_scan">START SCAN</span>
           </button>
@@ -1126,6 +1117,16 @@
           <div class="scanning-indicator" id="scanningIndicator" style="display:none;">
             <div class="scanning-dots"><span></span><span></span><span></span></div>
             <span data-i18n="scanning_dots">Đang quét...</span>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 12px; padding: 12px 20px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 18px;">🔍</span>
+            <input type="text" id="tagSearchInput" placeholder="Tìm kiếm EPC (Hex)..." oninput="renderTagTable()"
+              style="flex: 1; background: transparent; border: none; color: var(--text); outline: none; font-family: 'JetBrains Mono', monospace; font-size: 14px;">
+            <button class="btn btn-outline btn-sm"
+              onclick="document.getElementById('tagSearchInput').value=''; renderTagTable();"><span data-i18n="clear">CLEAR</span></button>
           </div>
         </div>
 
@@ -1153,7 +1154,7 @@
             <table id="tagTable">
               <thead>
                 <tr>
-                  <th data-i18n="th_count_num">#</th>
+                  <th>#</th>
                   <th data-i18n="th_epc">EPC (HEX)</th>
                   <th data-i18n="th_rssi">RSSI</th>
                   <th data-i18n="th_signal">Signal</th>
