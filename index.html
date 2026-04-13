@@ -1053,25 +1053,25 @@
     </div>
     <div class="nav">
       <div class="nav-item active" onclick="switchTab('scanner');closeSidebar()">
-        <span class="nav-icon">📡</span> <span data-i18n="nav_scanner">Scanner</span>
+        <span class="nav-icon">📡</span> Scanner
       </div>
       <div class="nav-item" onclick="switchTab('locate');closeSidebar()">
-        <span class="nav-icon">🎯</span> <span data-i18n="nav_locate">Locate</span>
+        <span class="nav-icon">🎯</span> Locate
       </div>
       <div class="nav-item" onclick="switchTab('history');closeSidebar()">
-        <span class="nav-icon">📋</span> <span data-i18n="nav_history">History</span>
+        <span class="nav-icon">📋</span> History
       </div>
       <div class="nav-item" onclick="switchTab('settings');closeSidebar()">
-        <span class="nav-icon">⚙️</span> <span data-i18n="nav_settings">Settings</span>
+        <span class="nav-icon">⚙️</span> Settings
       </div>
       <div class="nav-item" onclick="switchTab('debug');closeSidebar()">
-        <span class="nav-icon">🔧</span> <span data-i18n="nav_debug">Debug</span>
+        <span class="nav-icon">🔧</span> Debug
       </div>
     </div>
     <div class="sidebar-footer">
       <button class="ble-btn disconnected" id="bleBtn" onclick="closeSidebar();toggleBLE()">
         <span class="status-dot" id="statusDot"></span>
-        <span id="bleBtnText" data-i18n="connect_ble">CONNECT BLE</span>
+        <span id="bleBtnText">CONNECT BLE</span>
       </button>
       <div style="text-align:center;font-size:10px;color:var(--text-dim);margin-top:8px;" id="deviceName">-</div>
     </div>
@@ -1089,9 +1089,9 @@
         </select>
         <div class="hw-btn-indicator" id="hwIndicator">
           <div class="dot"></div>
-          <span id="hwIndicatorText" data-i18n="hw_button">HW BUTTON</span>
+          <span id="hwIndicatorText">HW BUTTON</span>
         </div>
-        <div class="chip chip-red" id="connChip" data-i18n="offline">● OFFLINE</div>
+        <div class="chip chip-red" id="connChip">● OFFLINE</div>
       </div>
     </div>
 
@@ -1100,42 +1100,38 @@
       <!-- SCANNER TAB -->
       <div class="tab-panel active" id="tab-scanner">
         <div class="mode-tabs">
-          <div class="mode-tab active" id="modeStd" onclick="setMode('std')">📦 <span
-              data-i18n="std_mode">Standard</span></div>
-          <div class="mode-tab" id="modeBatch" onclick="setMode('batch')">🗂️ <span data-i18n="batch_mode">Batch</span>
-          </div>
+          <div class="mode-tab active" id="modeStd" onclick="setMode('std')">📦 Standard</div>
+          <div class="mode-tab" id="modeBatch" onclick="setMode('batch')">🗂️ Batch</div>
         </div>
 
         <div class="scan-controls">
           <button class="btn btn-primary" id="scanBtn" onclick="toggleScan()" disabled>
-            <span>▶</span> <span id="scanBtnText" data-i18n="start_scan">START SCAN</span>
+            <span>▶</span> <span id="scanBtnText">START SCAN</span>
           </button>
-          <button class="btn btn-outline btn-sm" onclick="clearTags()" id="clearBtn">🗑️ <span
-              data-i18n="clear">CLEAR</span></button>
-          <button class="btn btn-outline btn-sm" onclick="exportCSV()">📥 <span
-              data-i18n="export">EXPORT</span></button>
+          <button class="btn btn-outline btn-sm" onclick="clearTags()" id="clearBtn">🗑️ CLEAR</button>
+          <button class="btn btn-outline btn-sm" onclick="exportCSV()">📥 EXPORT</button>
           <div class="scanning-indicator" id="scanningIndicator" style="display:none;">
             <div class="scanning-dots"><span></span><span></span><span></span></div>
-            <span data-i18n="scanning_dots">Đang quét...</span>
+            Đang quét...
           </div>
         </div>
 
         <div class="stats-row">
           <div class="stat-card">
             <div class="stat-val" id="statUnique">0</div>
-            <div class="stat-label" data-i18n="unique_tags">Unique Tags</div>
+            <div class="stat-label">Unique Tags</div>
           </div>
           <div class="stat-card">
             <div class="stat-val" id="statTotal">0</div>
-            <div class="stat-label" data-i18n="total_reads">Total Reads</div>
+            <div class="stat-label">Total Reads</div>
           </div>
           <div class="stat-card">
             <div class="stat-val" id="statRate" style="color:var(--accent2)">0</div>
-            <div class="stat-label" data-i18n="tags_sec">Tags/sec</div>
+            <div class="stat-label">Tags/sec</div>
           </div>
           <div class="stat-card">
             <div class="stat-val" id="statRSSI" style="color:var(--accent3)">-</div>
-            <div class="stat-label" data-i18n="avg_rssi">Avg RSSI</div>
+            <div class="stat-label">Avg RSSI</div>
           </div>
         </div>
 
@@ -1144,13 +1140,13 @@
             <table id="tagTable">
               <thead>
                 <tr>
-                  <th data-i18n="th_count_num">#</th>
-                  <th data-i18n="th_epc">EPC (HEX)</th>
-                  <th data-i18n="th_rssi">RSSI</th>
-                  <th data-i18n="th_signal">Signal</th>
-                  <th data-i18n="th_count">Count</th>
-                  <th data-i18n="th_last">Last Seen</th>
-                  <th data-i18n="th_action">Action</th>
+                  <th>#</th>
+                  <th>EPC (HEX)</th>
+                  <th>RSSI</th>
+                  <th>Signal</th>
+                  <th>Count</th>
+                  <th>Last Seen</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody id="tagTableBody">
@@ -1158,7 +1154,7 @@
                   <td colspan="7">
                     <div class="empty-state">
                       <div class="empty-icon">📭</div>
-                      <div data-i18n="no_tags">No tags detected</div>
+                      <div>No tags detected</div>
                     </div>
                   </td>
                 </tr>
@@ -1171,16 +1167,14 @@
       <!-- LOCATE TAB -->
       <div class="tab-panel" id="tab-locate">
         <div class="card">
-          <div class="card-title" data-i18n="find_mode">🎯 Find Mode - Locate Tag</div>
+          <div class="card-title">🎯 Find Mode - Locate Tag</div>
           <div class="form-group">
-            <label class="form-label" data-i18n="target_epc">Target EPC (Hex)</label>
+            <label class="form-label">Target EPC (Hex)</label>
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
               <input class="form-input" id="locateEpc" placeholder="E.g.: E20034120107851600000007"
                 style="font-family:'JetBrains Mono',monospace;flex:1;min-width:150px;">
-              <button class="btn btn-primary" onclick="startLocate()" id="locateBtn" disabled><span data-i18n="find">🔍
-                  Find</span></button>
-              <button class="btn btn-danger btn-sm" onclick="stopLocate()" id="stopLocateBtn" disabled><span
-                  data-i18n="stop">■ Stop</span></button>
+              <button class="btn btn-primary" onclick="startLocate()" id="locateBtn" disabled>🔍 Find</button>
+              <button class="btn btn-danger btn-sm" onclick="stopLocate()" id="stopLocateBtn" disabled>■ Stop</button>
             </div>
           </div>
         </div>
@@ -1191,14 +1185,14 @@
                 <div class="signal-val" id="signalPct">0%</div>
               </div>
               <div class="rssi-display" id="locateRssi" style="color:var(--text-dim)">---</div>
-              <div style="font-size:12px;color:var(--text-dim);" data-i18n="signal_strength">Signal Strength</div>
+              <div style="font-size:12px;color:var(--text-dim);">Signal Strength</div>
               <div id="locateEpcDisplay"
                 style="margin-top:8px;font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;word-break:break-all;">
               </div>
             </div>
           </div>
           <div class="card">
-            <div class="card-title" data-i18n="signal_history">📊 Signal History</div>
+            <div class="card-title">📊 Signal History</div>
             <div class="locate-log" id="locateLog"></div>
           </div>
         </div>
@@ -1207,23 +1201,20 @@
       <!-- HISTORY TAB -->
       <div class="tab-panel" id="tab-history">
         <div class="card">
-          <div class="card-title" data-i18n="batch_history_title">📋 Batch Scan History</div>
+          <div class="card-title">📋 Batch Scan History</div>
           <div id="historyNoteBox" data-i18n="history_instructions"
             style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--text-mid);line-height:1.8;">
           </div>
           <div style="margin-bottom:14px;">
-            <button class="btn btn-batch" onclick="switchTab('scanner');setMode('batch')" style="font-size:12px;"
-              data-i18n="open_batch_now">
+            <button class="btn btn-batch" onclick="switchTab('scanner');setMode('batch')" style="font-size:12px;">
               🗂️ Mở Batch Mode ngay
             </button>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
-            <button class="btn btn-primary" onclick="fetchHistory()" id="fetchBtn" disabled><span
-                data-i18n="fetch_from_device">📥 Fetch From Device</span></button>
-            <button class="btn btn-outline btn-sm" onclick="clearHistory()">🗑️ <span
-                data-i18n="clear">CLEAR</span></button>
-            <button class="btn btn-outline btn-sm" onclick="exportHistory()">📤 <span data-i18n="export_csv">Export
-                CSV</span></button>
+            <button class="btn btn-primary" onclick="fetchHistory()" id="fetchBtn" disabled>📥 Fetch From
+              Device</button>
+            <button class="btn btn-outline btn-sm" onclick="clearHistory()">🗑️ Clear</button>
+            <button class="btn btn-outline btn-sm" onclick="exportHistory()">📤 Export CSV</button>
           </div>
           <div id="historyStatus" style="margin-bottom:12px;font-size:13px;color:var(--text-dim);"></div>
           <div id="historyList"></div>
@@ -1234,9 +1225,9 @@
       <div class="tab-panel" id="tab-settings">
         <div class="settings-grid">
           <div class="card">
-            <div class="card-title" data-i18n="rf_power">📶 RF Power</div>
+            <div class="card-title">📶 RF Power</div>
             <div class="form-group">
-              <label class="form-label" data-i18n="tx_power">TX Power (dBm)</label>
+              <label class="form-label">TX Power (dBm)</label>
               <div class="slider-wrap">
                 <input type="range" min="0" max="30" value="26" id="powerSlider"
                   oninput="document.getElementById('powerVal').textContent=this.value+'dBm'">
@@ -1244,34 +1235,30 @@
               </div>
             </div>
             <div class="settings-actions">
-              <button class="btn btn-outline btn-sm" onclick="getSettings('GP')"><span data-i18n="action_get">↓
-                  GET</span></button>
-              <button class="btn btn-primary btn-sm" onclick="setPower()" id="setPowerBtn" disabled><span
-                  data-i18n="action_set">↑ SET</span></button>
+              <button class="btn btn-outline btn-sm" onclick="getSettings('GP')">↓ GET</button>
+              <button class="btn btn-primary btn-sm" onclick="setPower()" id="setPowerBtn" disabled>↑ SET</button>
             </div>
           </div>
           <div class="card">
-            <div class="card-title" data-i18n="rf_params">🔧 RF Parameters</div>
+            <div class="card-title">🔧 RF Parameters</div>
             <div class="form-group">
-              <label class="form-label" data-i18n="link_profile">Link Profile</label>
+              <label class="form-label">Link Profile</label>
               <select class="form-input form-select" id="linkProfile">
-                <option value="53" data-i18n="lp_std">53 - Standard (250Kbps)</option>
-                <option value="11" data-i18n="lp_quick">11 - Quick (640Kbps)</option>
-                <option value="13" data-i18n="lp_deep">13 - Deep (40Kbps)</option>
+                <option value="53">53 - Standard (250Kbps)</option>
+                <option value="11">11 - Quick (640Kbps)</option>
+                <option value="13">13 - Deep (40Kbps)</option>
               </select>
             </div>
             <div class="settings-actions">
-              <button class="btn btn-outline btn-sm" onclick="getSettings('GRP')"><span data-i18n="action_get">↓
-                  GET</span></button>
-              <button class="btn btn-primary btn-sm" onclick="setRFParams()" id="setRFBtn" disabled><span
-                  data-i18n="action_set">↑ SET</span></button>
+              <button class="btn btn-outline btn-sm" onclick="getSettings('GRP')">↓ GET</button>
+              <button class="btn btn-primary btn-sm" onclick="setRFParams()" id="setRFBtn" disabled>↑ SET</button>
             </div>
           </div>
           <div class="card">
-            <div class="card-title" data-i18n="qs_title">📊 Q / Session</div>
+            <div class="card-title">📊 Q / Session</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
               <div class="form-group">
-                <label class="form-label" data-i18n="q_value">Q Value</label>
+                <label class="form-label">Q Value</label>
                 <select class="form-input form-select" id="qValue">
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -1282,7 +1269,7 @@
                 </select>
               </div>
               <div class="form-group">
-                <label class="form-label" data-i18n="session">Session</label>
+                <label class="form-label">Session</label>
                 <select class="form-input form-select" id="session">
                   <option value="0">S0</option>
                   <option value="1" selected>S1</option>
@@ -1292,33 +1279,31 @@
               </div>
             </div>
             <div class="settings-actions">
-              <button class="btn btn-outline btn-sm" onclick="getSettings('GQS')"><span data-i18n="action_get">↓
-                  GET</span></button>
-              <button class="btn btn-primary btn-sm" onclick="setQSession()" id="setQBtn" disabled><span
-                  data-i18n="action_set">↑ SET</span></button>
+              <button class="btn btn-outline btn-sm" onclick="getSettings('GQS')">↓ GET</button>
+              <button class="btn btn-primary btn-sm" onclick="setQSession()" id="setQBtn" disabled>↑ SET</button>
             </div>
           </div>
           <div class="card">
-            <div class="card-title" data-i18n="dev_info">🌡️ Device Info</div>
+            <div class="card-title">🌡️ Device Info</div>
             <div style="display:grid;gap:8px;font-size:13px;">
-              <div style="display:flex;justify-content:space-between;"><span style="color:var(--text-dim)"
-                  data-i18n="device">Device</span><span id="infoDevice"
+              <div style="display:flex;justify-content:space-between;"><span
+                  style="color:var(--text-dim)">Device</span><span id="infoDevice"
                   style="font-family:'JetBrains Mono',monospace;font-size:12px;">-</span></div>
-              <div style="display:flex;justify-content:space-between;"><span style="color:var(--text-dim)"
-                  data-i18n="temperature">Temperature</span><span id="infoTemp" style="color:var(--accent3)">-</span>
-              </div>
+              <div style="display:flex;justify-content:space-between;"><span
+                  style="color:var(--text-dim)">Temperature</span><span id="infoTemp"
+                  style="color:var(--accent3)">-</span></div>
               <!-- <div style="display:flex;justify-content:space-between;"><span style="color:var(--text-dim)">Battery</span><span id="infoBattery">-</span></div> -->
             </div>
             <div class="settings-actions" style="margin-top:14px;">
-              <button class="btn btn-outline btn-sm" onclick="getDeviceInfo()" id="getInfoBtn" disabled><span
-                  data-i18n="get_info">↓ GET INFO</span></button>
+              <button class="btn btn-outline btn-sm" onclick="getDeviceInfo()" id="getInfoBtn" disabled>↓ GET
+                INFO</button>
             </div>
           </div>
           <div class="card">
-            <div class="card-title" data-i18n="qp_title">📊 Query Parameter</div>
+            <div class="card-title">📊 Query Parameter</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
               <div class="form-group">
-                <label class="form-label" data-i18n="interval_ms">Interval (ms)</label>
+                <label class="form-label">Interval (ms)</label>
                 <select class="form-input form-select" id="interval">
                   <option value="0" selected>0 ms</option>
                   <option value="10">10 ms</option>
@@ -1330,7 +1315,7 @@
                 </select>
               </div>
               <div class="form-group">
-                <label class="form-label" data-i18n="dwell_raw">DWELL (RAW COUNT)</label>
+                <label class="form-label">DWELL (RAW COUNT)</label>
                 <select class="form-input form-select" id="dwell">
                   <script>
                     document.write(Array.from({ length: 254 }, (_, i) => `<option value="${i + 2}">${i + 2}</option>`).join(''));
@@ -1338,7 +1323,7 @@
                 </select>
               </div>
               <div class="form-group">
-                <label class="form-label" data-i18n="append">Append</label>
+                <label class="form-label">Append</label>
                 <select class="form-input form-select" id="append">
                   <option value="0" selected>0</option>
                   <option value="1">1</option>
@@ -1350,10 +1335,8 @@
               </div>
             </div>
             <div class="settings-actions">
-              <button class="btn btn-outline btn-sm" onclick="getSettings('GQP')"><span data-i18n="action_get">↓
-                  GET</span></button>
-              <button class="btn btn-primary btn-sm" onclick="setQueryParameter()" id="setQPBtn" disabled><span
-                  data-i18n="action_set">↑ SET</span></button>
+              <button class="btn btn-outline btn-sm" onclick="getSettings('GQP')">↓ GET</button>
+              <button class="btn btn-primary btn-sm" onclick="setQueryParameter()" id="setQPBtn" disabled>↑ SET</button>
             </div>
           </div>
         </div>
@@ -1362,14 +1345,12 @@
       <!-- DEBUG TAB -->
       <div class="tab-panel" id="tab-debug">
         <div class="card">
-          <div class="card-title" data-i18n="debug_title">🔧 BLE Communication Log</div>
+          <div class="card-title">🔧 BLE Communication Log</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
-            <button class="btn btn-outline btn-sm" onclick="clearDebug()">🗑️ <span
-                data-i18n="clear">CLEAR</span></button>
-            <button class="btn btn-outline btn-sm" onclick="downloadLog()">📥 <span
-                data-i18n="download">Download</span></button>
+            <button class="btn btn-outline btn-sm" onclick="clearDebug()">🗑️ Clear</button>
+            <button class="btn btn-outline btn-sm" onclick="downloadLog()">📥 Download</button>
             <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-dim);cursor:pointer;">
-              <input type="checkbox" id="autoScrollLog" checked> <span data-i18n="autoscroll">Auto-scroll</span>
+              <input type="checkbox" id="autoScrollLog" checked> Auto-scroll
             </label>
           </div>
           <div class="debug-log" id="debugLog"></div>
@@ -1386,171 +1367,41 @@
     // TRANSLATIONS (i18n)
     // ═══════════════════════════════════════════════════════════
     const i18n = {
-      "vi": {
-        "history_instructions": "
-            ⚠️ <b style=\"color:var(--warning)\">Lưu ý quan trọng:</b><br>
-            • <b>Hardware button</b> trên thiết bị = <b>Interactive mode</b> → <b style=\"color:var(--danger)\">KHÔNG lưu History</b><br>
-            • Để có History: phải dùng < b style =\"color:var(--accent)\">🗂️ Batch mode từ Web UI</b><br>
-      < div style =\"margin-top:8px;padding-top:8px;border-top:1px solid rgba(245,158,11,.2);\">
-              📋 <b>Cách dùng:</b> Tab Scanner → chọn < b >🗂️ Batch</b > → <b>START SCAN</b> (từ web) → quét xong →
-    <b>STOP SCAN</b> → quay lại đây Fetch
-            </div > ",
-    "conn_success": "✅ Đã kết nối: ",
-      "err_https": "❌ Bị chặn: Cần phục vụ qua HTTPS",
-        "err_gatt": "❌ Mất kết nối GATT. Thử lại!",
-          "msg_disconn": "Đã ngắt kết nối BLE",
-            "hw_batch": "🔘 HW Button: Quét Batch (có lưu History)",
-              "hw_inter": "🔘 HW Button: Quét Interactive (không lưu History)",
-                "hw_stop": "🔘 HW Button: Dừng quét",
-                  "nav_scanner": "Máy quét",
-                    "nav_locate": "Định vị",
-                      "nav_history": "Lịch sử",
-                        "nav_settings": "Cài đặt",
-                          "nav_debug": "Gỡ lỗi",
-                            "connect_ble": "KẾT NỐI BLE",
-                              "connecting": "ĐANG KẾT NỐI...",
-                                "disconnect": "NGẮT KẾT NỐI",
-                                  "online": "TRỰC TUYẾN",
-                                    "offline": "NGOẠI TUYẾN",
-                                      "hw_button": "NÚT BẤM HW",
-                                        "std_mode": "Tiêu chuẩn",
-                                          "batch_mode": "Lô",
-                                            "start_scan": "BẮT ĐẦU QUÉT",
-                                              "stop_scan": "DỪNG QUÉT",
-                                                "clear": "XÓA",
-                                                  "export": "XUẤT",
-                                                    "scanning_dots": "Đang quét...",
-                                                      "unique_tags": "Số Thẻ Đơn",
-                                                        "total_reads": "Tổng Số Đọc",
-                                                          "tags_sec": "Thẻ/giây",
-                                                            "avg_rssi": "RSSI Tr.bình",
-                                                              "th_epc": "EPC (HEX)",
-                                                                "th_rssi": "RSSI",
-                                                                  "th_signal": "Tín hiệu",
-                                                                    "th_count": "Số lượng",
-                                                                      "th_last": "Lần cuối",
-                                                                        "th_action": "Thao tác",
-                                                                          "no_tags": "Không có thẻ",
-                                                                            "find_mode": "🎯 Chế độ Tìm - Định vị thẻ",
-                                                                              "target_epc": "EPC mục tiêu (Hex)",
-                                                                                "find": "🔍 Tìm",
-                                                                                  "stop": "■ Dừng",
-                                                                                    "signal_strength": "Cường độ tín hiệu",
-                                                                                      "find_status_target": "Mục tiêu: ",
-                                                                                        "signal_history": "📊 Lịch sử tín hiệu",
-                                                                                          "batch_history_title": "📋 Lịch sử Lô",
-                                                                                            "open_batch_now": "🗂️ Mở Batch Mode ngay",
-                                                                                              "fetch_from_device": "📥 Tải từ thiết bị",
-                                                                                                "export_csv": "📤 Xuất CSV",
-                                                                                                  "no_data": "Không có dữ liệu",
-                                                                                                    "history_hint": "Hãy quét ở Batch Mode trước rồi Tải lại",
-                                                                                                      "rf_power": "📶 Công suất RF",
-                                                                                                        "tx_power": "Công.S TX (dBm)",
-                                                                                                          "action_get": "↓ LẤY",
-                                                                                                            "action_set": "↑ LƯU",
-                                                                                                              "rf_params": "🔧 Thông số RF",
-                                                                                                                "link_profile": "Profile Liên kết",
-                                                                                                                  "lp_std": "53 - T.chuẩn (250Kbps)",
-                                                                                                                    "lp_quick": "11 - Nhanh (640Kbps)",
-                                                                                                                      "lp_deep": "13 - Sâu (40Kbps)",
-                                                                                                                        "qs_title": "📊 Q / Phiên",
-                                                                                                                          "q_value": "Giá trị Q",
-                                                                                                                            "session": "Phiên",
-                                                                                                                              "dev_info": "🌡️ TT thiết bị",
-                                                                                                                                "device": "Thiết bị",
-                                                                                                                                  "temperature": "Nhiệt độ",
-                                                                                                                                    "get_info": "↓ LẤY TT",
-                                                                                                                                      "qp_title": "📊 Tham số truy vấn",
-                                                                                                                                        "interval_ms": "Giãn cách (ms)",
-                                                                                                                                          "dwell_raw": "DWELL (RAW)",
-                                                                                                                                            "append": "Nối dòng",
-                                                                                                                                              "debug_title": "🔧 Log giao tiếp BLE",
-                                                                                                                                                "download": "📥 Tải file",
-                                                                                                                                                  "autoscroll": "Tự đồng cuộn"
+      vi: {
+        history_instructions: `
+            ⚠️ <b style="color:var(--warning)">Lưu ý quan trọng:</b><br>
+            • <b>Hardware button</b> trên thiết bị = <b>Interactive mode</b> → <b style="color:var(--danger)">KHÔNG lưu History</b><br>
+            • Để có History: phải dùng <b style="color:var(--accent)">🗂️ Batch mode từ Web UI</b><br>
+            <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(245,158,11,.2);">
+              📋 <b>Cách dùng:</b> Tab Scanner → chọn <b>🗂️ Batch</b> → <b>START SCAN</b> (từ web) → quét xong →
+              <b>STOP SCAN</b> → quay lại đây Fetch
+            </div>`,
+        conn_success: `✅ Đã kết nối: `,
+        err_https: `❌ Bị chặn: Cần phục vụ qua HTTPS`,
+        err_gatt: `❌ Mất kết nối GATT. Thử lại!`,
+        msg_disconn: `Đã ngắt kết nối BLE`,
+        hw_batch: `🔘 HW Button: Quét Batch (có lưu History)`,
+        hw_inter: `🔘 HW Button: Quét Interactive (không lưu History)`,
+        hw_stop: `🔘 HW Button: Dừng quét`,
       },
-    "en": {
-      "history_instructions": "
-            ⚠️ <b style=\"color:var(--warning)\">Important Note:</b><br>
-            • <b>Hardware button</b> on device = <b>Interactive mode</b> → <b style=\"color:var(--danger)\">DOES NOT save History</b><br>
-            • To save History: you must use < b style =\"color:var(--accent)\">🗂️ Batch mode from Web UI</b><br>
-        < div style =\"margin-top:8px;padding-top:8px;border-top:1px solid rgba(245,158,11,.2);\">
-              📋 <b>Usage:</b> Scanner Tab → select < b >🗂️ Batch</b > → <b>START SCAN</b> (from web) → finish scan →
-      <b>STOP SCAN</b> → return here to Fetch
-            </div > ",
-      "conn_success": "✅ Connected: ",
-        "err_https": "❌ Blocked: Requires HTTPS",
-          "err_gatt": "❌ GATT connection lost. Retry!",
-            "msg_disconn": "BLE Disconnected",
-              "hw_batch": "🔘 HW Button: Batch Scan (History saved)",
-                "hw_inter": "🔘 HW Button: Interactive Scan (No History)",
-                  "hw_stop": "🔘 HW Button: Scan Stopped",
-                    "nav_scanner": "Scanner",
-                      "nav_locate": "Locate",
-                        "nav_history": "History",
-                          "nav_settings": "Settings",
-                            "nav_debug": "Debug",
-                              "connect_ble": "CONNECT BLE",
-                                "connecting": "CONNECTING...",
-                                  "disconnect": "DISCONNECT",
-                                    "online": "ONLINE",
-                                      "offline": "OFFLINE",
-                                        "hw_button": "HW BUTTON",
-                                          "std_mode": "Standard",
-                                            "batch_mode": "Batch",
-                                              "start_scan": "START SCAN",
-                                                "stop_scan": "STOP SCAN",
-                                                  "clear": "CLEAR",
-                                                    "export": "EXPORT",
-                                                      "scanning_dots": "Scanning...",
-                                                        "unique_tags": "Unique Tags",
-                                                          "total_reads": "Total Reads",
-                                                            "tags_sec": "Tags/sec",
-                                                              "avg_rssi": "Avg RSSI",
-                                                                "th_epc": "EPC (HEX)",
-                                                                  "th_rssi": "RSSI",
-                                                                    "th_signal": "Signal",
-                                                                      "th_count": "Count",
-                                                                        "th_last": "Last Seen",
-                                                                          "th_action": "Action",
-                                                                            "no_tags": "No tags detected",
-                                                                              "find_mode": "🎯 Find Mode - Locate Tag",
-                                                                                "target_epc": "Target EPC (Hex)",
-                                                                                  "find": "🔍 Find",
-                                                                                    "stop": "■ Stop",
-                                                                                      "signal_strength": "Signal Strength",
-                                                                                        "find_status_target": "Target: ",
-                                                                                          "signal_history": "📊 Signal History",
-                                                                                            "batch_history_title": "📋 Batch Scan History",
-                                                                                              "open_batch_now": "🗂️ Open Batch Mode now",
-                                                                                                "fetch_from_device": "📥 Fetch From Device",
-                                                                                                  "export_csv": "📤 Export CSV",
-                                                                                                    "no_data": "No data",
-                                                                                                      "history_hint": "Scan in Batch Mode first and then Fetch",
-                                                                                                        "rf_power": "📶 RF Power",
-                                                                                                          "tx_power": "TX Power (dBm)",
-                                                                                                            "action_get": "↓ GET",
-                                                                                                              "action_set": "↑ SET",
-                                                                                                                "rf_params": "🔧 RF Parameters",
-                                                                                                                  "link_profile": "Link Profile",
-                                                                                                                    "lp_std": "53 - Standard (250Kbps)",
-                                                                                                                      "lp_quick": "11 - Quick (640Kbps)",
-                                                                                                                        "lp_deep": "13 - Deep (40Kbps)",
-                                                                                                                          "qs_title": "📊 Q / Session",
-                                                                                                                            "q_value": "Q Value",
-                                                                                                                              "session": "Session",
-                                                                                                                                "dev_info": "🌡️ Device Info",
-                                                                                                                                  "device": "Device",
-                                                                                                                                    "temperature": "Temperature",
-                                                                                                                                      "get_info": "↓ GET INFO",
-                                                                                                                                        "qp_title": "📊 Query Parameter",
-                                                                                                                                          "interval_ms": "Interval (ms)",
-                                                                                                                                            "dwell_raw": "DWELL (RAW COUNT)",
-                                                                                                                                              "append": "Append",
-                                                                                                                                                "debug_title": "🔧 BLE Communication Log",
-                                                                                                                                                  "download": "📥 Download",
-                                                                                                                                                    "autoscroll": "Auto-scroll"
-    }
-};
+      en: {
+        history_instructions: `
+            ⚠️ <b style="color:var(--warning)">Important Note:</b><br>
+            • <b>Hardware button</b> on device = <b>Interactive mode</b> → <b style="color:var(--danger)">DOES NOT save History</b><br>
+            • To save History: you must use <b style="color:var(--accent)">🗂️ Batch mode from Web UI</b><br>
+            <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(245,158,11,.2);">
+              📋 <b>Usage:</b> Scanner Tab → select <b>🗂️ Batch</b> → <b>START SCAN</b> (from web) → finish scan →
+              <b>STOP SCAN</b> → return here to Fetch
+            </div>`,
+        conn_success: `✅ Connected: `,
+        err_https: `❌ Blocked: Requires HTTPS`,
+        err_gatt: `❌ GATT connection lost. Retry!`,
+        msg_disconn: `BLE Disconnected`,
+        hw_batch: `🔘 HW Button: Batch Scan (History saved)`,
+        hw_inter: `🔘 HW Button: Interactive Scan (No History)`,
+        hw_stop: `🔘 HW Button: Scan Stopped`,
+      }
+    };
 
     let currentLang = localStorage.getItem('lang') || 'vi';
 
@@ -1558,40 +1409,13 @@
       return i18n[currentLang][key] || key;
     }
 
-
     function toggleLang(lang) {
       currentLang = lang;
       localStorage.setItem('lang', currentLang);
       document.querySelectorAll('[data-i18n]').forEach(el => {
         el.innerHTML = t(el.getAttribute('data-i18n'));
       });
-      document.querySelectorAll('span[data-i18n]').forEach(el => {
-        el.innerHTML = t(el.getAttribute('data-i18n'));
-      });
-      // Update dynamic elements
-      // Reassign BLE UI if needed
-      if (typeof setBLEUI === 'function') {
-        if (isConnected) setBLEUI('connected');
-        else setBLEUI('disconnected');
-      }
-
-      // Reassign Tab Titles
-      const dynTabTitles = { scanner: '📡 ' + t('nav_scanner'), locate: '🎯 ' + t('nav_locate'), history: '📋 ' + t('nav_history'), settings: '⚙️ ' + t('nav_settings'), debug: '🔧 ' + t('nav_debug') };
-      document.querySelectorAll('.nav-item').forEach(el => {
-        const tText = el.textContent;
-        if (tText.includes('📡')) el.innerHTML = '<span class="nav-icon">📡</span> ' + t('nav_scanner');
-        if (tText.includes('🎯')) el.innerHTML = '<span class="nav-icon">🎯</span> ' + t('nav_locate');
-        if (tText.includes('📋')) el.innerHTML = '<span class="nav-icon">📋</span> ' + t('nav_history');
-        if (tText.includes('⚙️')) el.innerHTML = '<span class="nav-icon">⚙️</span> ' + t('nav_settings');
-        if (tText.includes('🔧')) el.innerHTML = '<span class="nav-icon">🔧</span> ' + t('nav_debug');
-      });
-
-      const activeTabId = Array.from(document.querySelectorAll('.tab-panel')).find(p => p.classList.contains('active'))?.id;
-      if (activeTabId) {
-        const name = activeTabId.replace('tab-', '');
-        document.getElementById('topbarTitle').textContent = dynTabTitles[name] || name;
-      }
-    };
+    }
 
     // ═══════════════════════════════════════════════════════════
     // BLE CONFIGURATION
@@ -1623,7 +1447,7 @@
     // ═══════════════════════════════════════════════════════════
     // TAB NAVIGATION
     // ═══════════════════════════════════════════════════════════
-    const tabTitles = { scanner: '📡 ' + (t('nav_scanner') || 'Scanner'), locate: '🎯 ' + (t('nav_locate') || 'Locate'), history: '📋 ' + (t('nav_history') || 'History'), settings: '⚙️ ' + (t('nav_settings') || 'Settings'), debug: '🔧 ' + (t('nav_debug') || 'Debug') };
+    const tabTitles = { scanner: '📡 Scanner', locate: '🎯 Locate', history: '📋 History', settings: '⚙️ Settings', debug: '🔧 Debug' };
     function switchTab(name) {
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1951,12 +1775,12 @@
       const ind = document.getElementById('scanningIndicator');
       if (scanning) {
         btn.className = 'btn btn-stop';
-        txt.textContent = t('stop_scan');
+        txt.textContent = 'STOP SCAN';
         btn.querySelector('span:first-child').textContent = '■';
         ind.style.display = 'flex';
       } else {
         btn.className = 'btn btn-primary';
-        txt.textContent = t('start_scan');
+        txt.textContent = 'START SCAN';
         btn.querySelector('span:first-child').textContent = '▶';
         ind.style.display = 'none';
       }
@@ -2010,7 +1834,7 @@
     function renderTagTable() {
       const tbody = document.getElementById('tagTableBody');
       if (tags.size === 0) {
-        tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div><div data-i18n="no_tags">No tags detected</div></div></td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div><div>No tags detected</div></div></td></tr>';
         return;
       }
       const sorted = [...tags.values()].sort((a, b) => b.lastSeen - a.lastSeen);
@@ -2088,7 +1912,7 @@
       const epc = document.getElementById('locateEpc').value.trim();
       if (!epc) { showToast('Nhập EPC cần tìm', 'error'); return; }
       locating = true;
-      document.getElementById('locateEpcDisplay').textContent = t('find_status_target') + epc;
+      document.getElementById('locateEpcDisplay').textContent = 'Target: ' + epc;
       document.getElementById('locateBtn').disabled = true;
       document.getElementById('stopLocateBtn').disabled = false;
       await sendCmd({ cmd: 'F', val: epc });
@@ -2202,7 +2026,11 @@
         const tagList = data.epcs || data.tags || data.epc_list || [];
 
         if (tagList.length === 0) {
-          list.innerHTML = '<div style="color:var(--text-dim);text-align:center;padding:30px;"><div style="font-size:32px;margin-bottom:8px;opacity:.3">📭</div><div>' + t('no_data') + '</div><div style="font-size:11px;margin-top:8px;opacity:.6">' + t('history_hint') + '</div></div>';
+          list.innerHTML = '<div style="color:var(--text-dim);text-align:center;padding:30px;">' +
+            '<div style="font-size:32px;margin-bottom:8px;opacity:.3">📭</div>' +
+            '<div>Không có dữ liệu</div>' +
+            '<div style="font-size:11px;margin-top:8px;opacity:.6">Hãy quét ở Batch Mode trước rồi Fetch lại</div>' +
+            '</div>';
           return;
         }
 
@@ -2265,9 +2093,9 @@
       btn.className = 'ble-btn ' + state;
       dot.className = 'status-dot' + (state === 'connecting' ? ' pulse' : '');
       isConnected = state === 'connected';
-      txt.textContent = state === 'connected' ? t('disconnect') : state === 'connecting' ? t('connecting') : t('connect_ble');
+      txt.textContent = state === 'connected' ? 'DISCONNECT' : state === 'connecting' ? 'CONNECTING...' : 'CONNECT BLE';
       chip.className = 'chip ' + (state === 'connected' ? 'chip-green' : state === 'connecting' ? 'chip-orange' : 'chip-red');
-      chip.textContent = '● ' + (state === 'connected' ? t('online') : state === 'connecting' ? t('connecting') : t('offline'));
+      chip.textContent = '● ' + (state === 'connected' ? 'ONLINE' : state === 'connecting' ? 'CONNECTING' : 'OFFLINE');
     }
 
     function setControlsEnabled(en) {
