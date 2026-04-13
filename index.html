@@ -1053,15 +1053,20 @@
     </div>
     <div class="nav">
       <div class="nav-item active" onclick="switchTab('scanner');closeSidebar()">
-        <span class="nav-icon">📡</span> <span data-i18n="nav_scanner">Scanner</span></div>
+        <span class="nav-icon">📡</span> <span data-i18n="nav_scanner">Scanner</span>
+      </div>
       <div class="nav-item" onclick="switchTab('locate');closeSidebar()">
-        <span class="nav-icon">🎯</span> <span data-i18n="nav_locate">Locate</span></div>
+        <span class="nav-icon">🎯</span> <span data-i18n="nav_locate">Locate</span>
+      </div>
       <div class="nav-item" onclick="switchTab('history');closeSidebar()">
-        <span class="nav-icon">📋</span> <span data-i18n="nav_history">History</span></div>
+        <span class="nav-icon">📋</span> <span data-i18n="nav_history">History</span>
+      </div>
       <div class="nav-item" onclick="switchTab('settings');closeSidebar()">
-        <span class="nav-icon">⚙️</span> <span data-i18n="nav_settings">Settings</span></div>
+        <span class="nav-icon">⚙️</span> <span data-i18n="nav_settings">Settings</span>
+      </div>
       <div class="nav-item" onclick="switchTab('debug');closeSidebar()">
-        <span class="nav-icon">🔧</span> <span data-i18n="nav_debug">Debug</span></div>
+        <span class="nav-icon">🔧</span> <span data-i18n="nav_debug">Debug</span>
+      </div>
     </div>
     <div class="sidebar-footer">
       <button class="ble-btn disconnected" id="bleBtn" onclick="closeSidebar();toggleBLE()">
@@ -1095,16 +1100,20 @@
       <!-- SCANNER TAB -->
       <div class="tab-panel active" id="tab-scanner">
         <div class="mode-tabs">
-          <div class="mode-tab active" id="modeStd" onclick="setMode('std')">📦 <span data-i18n="std_mode">Standard</span></div>
-          <div class="mode-tab" id="modeBatch" onclick="setMode('batch')">🗂️ <span data-i18n="batch_mode">Batch</span></div>
+          <div class="mode-tab active" id="modeStd" onclick="setMode('std')">📦 <span
+              data-i18n="std_mode">Standard</span></div>
+          <div class="mode-tab" id="modeBatch" onclick="setMode('batch')">🗂️ <span data-i18n="batch_mode">Batch</span>
+          </div>
         </div>
 
         <div class="scan-controls">
           <button class="btn btn-primary" id="scanBtn" onclick="toggleScan()" disabled>
             <span>▶</span> <span id="scanBtnText" data-i18n="start_scan">START SCAN</span>
           </button>
-          <button class="btn btn-outline btn-sm" onclick="clearTags()" id="clearBtn">🗑️ <span data-i18n="clear">CLEAR</span></button>
-          <button class="btn btn-outline btn-sm" onclick="exportCSV()">📥 <span data-i18n="export">EXPORT</span></button>
+          <button class="btn btn-outline btn-sm" onclick="clearTags()" id="clearBtn">🗑️ <span
+              data-i18n="clear">CLEAR</span></button>
+          <button class="btn btn-outline btn-sm" onclick="exportCSV()">📥 <span
+              data-i18n="export">EXPORT</span></button>
           <div class="scanning-indicator" id="scanningIndicator" style="display:none;">
             <div class="scanning-dots"><span></span><span></span><span></span></div>
             <span data-i18n="scanning_dots">Đang quét...</span>
@@ -1168,8 +1177,10 @@
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
               <input class="form-input" id="locateEpc" placeholder="E.g.: E20034120107851600000007"
                 style="font-family:'JetBrains Mono',monospace;flex:1;min-width:150px;">
-              <button class="btn btn-primary" onclick="startLocate()" id="locateBtn" disabled><span data-i18n="find">🔍 Find</span></button>
-              <button class="btn btn-danger btn-sm" onclick="stopLocate()" id="stopLocateBtn" disabled><span data-i18n="stop">■ Stop</span></button>
+              <button class="btn btn-primary" onclick="startLocate()" id="locateBtn" disabled><span data-i18n="find">🔍
+                  Find</span></button>
+              <button class="btn btn-danger btn-sm" onclick="stopLocate()" id="stopLocateBtn" disabled><span
+                  data-i18n="stop">■ Stop</span></button>
             </div>
           </div>
         </div>
@@ -1201,14 +1212,18 @@
             style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--text-mid);line-height:1.8;">
           </div>
           <div style="margin-bottom:14px;">
-            <button class="btn btn-batch" onclick="switchTab('scanner');setMode('batch')" style="font-size:12px;" data-i18n="open_batch_now">
+            <button class="btn btn-batch" onclick="switchTab('scanner');setMode('batch')" style="font-size:12px;"
+              data-i18n="open_batch_now">
               🗂️ Mở Batch Mode ngay
             </button>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
-            <button class="btn btn-primary" onclick="fetchHistory()" id="fetchBtn" disabled><span data-i18n="fetch_from_device">📥 Fetch From Device</span></button>
-            <button class="btn btn-outline btn-sm" onclick="clearHistory()">🗑️ <span data-i18n="clear">CLEAR</span></button>
-            <button class="btn btn-outline btn-sm" onclick="exportHistory()">📤 <span data-i18n="export_csv">Export CSV</span></button>
+            <button class="btn btn-primary" onclick="fetchHistory()" id="fetchBtn" disabled><span
+                data-i18n="fetch_from_device">📥 Fetch From Device</span></button>
+            <button class="btn btn-outline btn-sm" onclick="clearHistory()">🗑️ <span
+                data-i18n="clear">CLEAR</span></button>
+            <button class="btn btn-outline btn-sm" onclick="exportHistory()">📤 <span data-i18n="export_csv">Export
+                CSV</span></button>
           </div>
           <div id="historyStatus" style="margin-bottom:12px;font-size:13px;color:var(--text-dim);"></div>
           <div id="historyList"></div>
@@ -1229,8 +1244,10 @@
               </div>
             </div>
             <div class="settings-actions">
-              <button class="btn btn-outline btn-sm" onclick="getSettings('GP')"><span data-i18n="action_get">↓ GET</span></button>
-              <button class="btn btn-primary btn-sm" onclick="setPower()" id="setPowerBtn" disabled><span data-i18n="action_set">↑ SET</span></button>
+              <button class="btn btn-outline btn-sm" onclick="getSettings('GP')"><span data-i18n="action_get">↓
+                  GET</span></button>
+              <button class="btn btn-primary btn-sm" onclick="setPower()" id="setPowerBtn" disabled><span
+                  data-i18n="action_set">↑ SET</span></button>
             </div>
           </div>
           <div class="card">
@@ -1244,8 +1261,10 @@
               </select>
             </div>
             <div class="settings-actions">
-              <button class="btn btn-outline btn-sm" onclick="getSettings('GRP')"><span data-i18n="action_get">↓ GET</span></button>
-              <button class="btn btn-primary btn-sm" onclick="setRFParams()" id="setRFBtn" disabled><span data-i18n="action_set">↑ SET</span></button>
+              <button class="btn btn-outline btn-sm" onclick="getSettings('GRP')"><span data-i18n="action_get">↓
+                  GET</span></button>
+              <button class="btn btn-primary btn-sm" onclick="setRFParams()" id="setRFBtn" disabled><span
+                  data-i18n="action_set">↑ SET</span></button>
             </div>
           </div>
           <div class="card">
@@ -1273,23 +1292,26 @@
               </div>
             </div>
             <div class="settings-actions">
-              <button class="btn btn-outline btn-sm" onclick="getSettings('GQS')"><span data-i18n="action_get">↓ GET</span></button>
-              <button class="btn btn-primary btn-sm" onclick="setQSession()" id="setQBtn" disabled><span data-i18n="action_set">↑ SET</span></button>
+              <button class="btn btn-outline btn-sm" onclick="getSettings('GQS')"><span data-i18n="action_get">↓
+                  GET</span></button>
+              <button class="btn btn-primary btn-sm" onclick="setQSession()" id="setQBtn" disabled><span
+                  data-i18n="action_set">↑ SET</span></button>
             </div>
           </div>
           <div class="card">
             <div class="card-title" data-i18n="dev_info">🌡️ Device Info</div>
             <div style="display:grid;gap:8px;font-size:13px;">
-              <div style="display:flex;justify-content:space-between;"><span
-                  style="color:var(--text-dim)" data-i18n="device">Device</span><span id="infoDevice"
+              <div style="display:flex;justify-content:space-between;"><span style="color:var(--text-dim)"
+                  data-i18n="device">Device</span><span id="infoDevice"
                   style="font-family:'JetBrains Mono',monospace;font-size:12px;">-</span></div>
-              <div style="display:flex;justify-content:space-between;"><span
-                  style="color:var(--text-dim)" data-i18n="temperature">Temperature</span><span id="infoTemp"
-                  style="color:var(--accent3)">-</span></div>
+              <div style="display:flex;justify-content:space-between;"><span style="color:var(--text-dim)"
+                  data-i18n="temperature">Temperature</span><span id="infoTemp" style="color:var(--accent3)">-</span>
+              </div>
               <!-- <div style="display:flex;justify-content:space-between;"><span style="color:var(--text-dim)">Battery</span><span id="infoBattery">-</span></div> -->
             </div>
             <div class="settings-actions" style="margin-top:14px;">
-              <button class="btn btn-outline btn-sm" onclick="getDeviceInfo()" id="getInfoBtn" disabled><span data-i18n="get_info">↓ GET INFO</span></button>
+              <button class="btn btn-outline btn-sm" onclick="getDeviceInfo()" id="getInfoBtn" disabled><span
+                  data-i18n="get_info">↓ GET INFO</span></button>
             </div>
           </div>
           <div class="card">
@@ -1328,8 +1350,10 @@
               </div>
             </div>
             <div class="settings-actions">
-              <button class="btn btn-outline btn-sm" onclick="getSettings('GQP')"><span data-i18n="action_get">↓ GET</span></button>
-              <button class="btn btn-primary btn-sm" onclick="setQueryParameter()" id="setQPBtn" disabled><span data-i18n="action_set">↑ SET</span></button>
+              <button class="btn btn-outline btn-sm" onclick="getSettings('GQP')"><span data-i18n="action_get">↓
+                  GET</span></button>
+              <button class="btn btn-primary btn-sm" onclick="setQueryParameter()" id="setQPBtn" disabled><span
+                  data-i18n="action_set">↑ SET</span></button>
             </div>
           </div>
         </div>
@@ -1340,8 +1364,10 @@
         <div class="card">
           <div class="card-title" data-i18n="debug_title">🔧 BLE Communication Log</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
-            <button class="btn btn-outline btn-sm" onclick="clearDebug()">🗑️ <span data-i18n="clear">CLEAR</span></button>
-            <button class="btn btn-outline btn-sm" onclick="downloadLog()">📥 <span data-i18n="download">Download</span></button>
+            <button class="btn btn-outline btn-sm" onclick="clearDebug()">🗑️ <span
+                data-i18n="clear">CLEAR</span></button>
+            <button class="btn btn-outline btn-sm" onclick="downloadLog()">📥 <span
+                data-i18n="download">Download</span></button>
             <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-dim);cursor:pointer;">
               <input type="checkbox" id="autoScrollLog" checked> <span data-i18n="autoscroll">Auto-scroll</span>
             </label>
@@ -1361,169 +1387,169 @@
     // ═══════════════════════════════════════════════════════════
     const i18n = {
       "vi": {
-            "history_instructions": "
+        "history_instructions": "
             ⚠️ <b style=\"color:var(--warning)\">Lưu ý quan trọng:</b><br>
             • <b>Hardware button</b> trên thiết bị = <b>Interactive mode</b> → <b style=\"color:var(--danger)\">KHÔNG lưu History</b><br>
-            • Để có History: phải dùng <b style=\"color:var(--accent)\">🗂️ Batch mode từ Web UI</b><br>
-            <div style=\"margin-top:8px;padding-top:8px;border-top:1px solid rgba(245,158,11,.2);\">
-              📋 <b>Cách dùng:</b> Tab Scanner → chọn <b>🗂️ Batch</b> → <b>START SCAN</b> (từ web) → quét xong →
-              <b>STOP SCAN</b> → quay lại đây Fetch
-            </div>",
-            "conn_success": "✅ Đã kết nối: ",
-            "err_https": "❌ Bị chặn: Cần phục vụ qua HTTPS",
-            "err_gatt": "❌ Mất kết nối GATT. Thử lại!",
-            "msg_disconn": "Đã ngắt kết nối BLE",
+            • Để có History: phải dùng < b style =\"color:var(--accent)\">🗂️ Batch mode từ Web UI</b><br>
+      < div style =\"margin-top:8px;padding-top:8px;border-top:1px solid rgba(245,158,11,.2);\">
+              📋 <b>Cách dùng:</b> Tab Scanner → chọn < b >🗂️ Batch</b > → <b>START SCAN</b> (từ web) → quét xong →
+    <b>STOP SCAN</b> → quay lại đây Fetch
+            </div > ",
+    "conn_success": "✅ Đã kết nối: ",
+      "err_https": "❌ Bị chặn: Cần phục vụ qua HTTPS",
+        "err_gatt": "❌ Mất kết nối GATT. Thử lại!",
+          "msg_disconn": "Đã ngắt kết nối BLE",
             "hw_batch": "🔘 HW Button: Quét Batch (có lưu History)",
-            "hw_inter": "🔘 HW Button: Quét Interactive (không lưu History)",
-            "hw_stop": "🔘 HW Button: Dừng quét",
-            "nav_scanner": "Máy quét",
-            "nav_locate": "Định vị",
-            "nav_history": "Lịch sử",
-            "nav_settings": "Cài đặt",
-            "nav_debug": "Gỡ lỗi",
-            "connect_ble": "KẾT NỐI BLE",
-            "connecting": "ĐANG KẾT NỐI...",
-            "disconnect": "NGẮT KẾT NỐI",
-            "online": "TRỰC TUYẾN",
-            "offline": "NGOẠI TUYẾN",
-            "hw_button": "NÚT BẤM HW",
-            "std_mode": "Tiêu chuẩn",
-            "batch_mode": "Lô",
-            "start_scan": "BẮT ĐẦU QUÉT",
-            "stop_scan": "DỪNG QUÉT",
-            "clear": "XÓA",
-            "export": "XUẤT",
-            "scanning_dots": "Đang quét...",
-            "unique_tags": "Số Thẻ Đơn",
-            "total_reads": "Tổng Số Đọc",
-            "tags_sec": "Thẻ/giây",
-            "avg_rssi": "RSSI Tr.bình",
-            "th_epc": "EPC (HEX)",
-            "th_rssi": "RSSI",
-            "th_signal": "Tín hiệu",
-            "th_count": "Số lượng",
-            "th_last": "Lần cuối",
-            "th_action": "Thao tác",
-            "no_tags": "Không có thẻ",
-            "find_mode": "🎯 Chế độ Tìm - Định vị thẻ",
-            "target_epc": "EPC mục tiêu (Hex)",
-            "find": "🔍 Tìm",
-            "stop": "■ Dừng",
-            "signal_strength": "Cường độ tín hiệu",
-            "find_status_target": "Mục tiêu: ",
-            "signal_history": "📊 Lịch sử tín hiệu",
-            "batch_history_title": "📋 Lịch sử Lô",
-            "open_batch_now": "🗂️ Mở Batch Mode ngay",
-            "fetch_from_device": "📥 Tải từ thiết bị",
-            "export_csv": "📤 Xuất CSV",
-            "no_data": "Không có dữ liệu",
-            "history_hint": "Hãy quét ở Batch Mode trước rồi Tải lại",
-            "rf_power": "📶 Công suất RF",
-            "tx_power": "Công.S TX (dBm)",
-            "action_get": "↓ LẤY",
-            "action_set": "↑ LƯU",
-            "rf_params": "🔧 Thông số RF",
-            "link_profile": "Profile Liên kết",
-            "lp_std": "53 - T.chuẩn (250Kbps)",
-            "lp_quick": "11 - Nhanh (640Kbps)",
-            "lp_deep": "13 - Sâu (40Kbps)",
-            "qs_title": "📊 Q / Phiên",
-            "q_value": "Giá trị Q",
-            "session": "Phiên",
-            "dev_info": "🌡️ TT thiết bị",
-            "device": "Thiết bị",
-            "temperature": "Nhiệt độ",
-            "get_info": "↓ LẤY TT",
-            "qp_title": "📊 Tham số truy vấn",
-            "interval_ms": "Giãn cách (ms)",
-            "dwell_raw": "DWELL (RAW)",
-            "append": "Nối dòng",
-            "debug_title": "🔧 Log giao tiếp BLE",
-            "download": "📥 Tải file",
-            "autoscroll": "Tự đồng cuộn"
+              "hw_inter": "🔘 HW Button: Quét Interactive (không lưu History)",
+                "hw_stop": "🔘 HW Button: Dừng quét",
+                  "nav_scanner": "Máy quét",
+                    "nav_locate": "Định vị",
+                      "nav_history": "Lịch sử",
+                        "nav_settings": "Cài đặt",
+                          "nav_debug": "Gỡ lỗi",
+                            "connect_ble": "KẾT NỐI BLE",
+                              "connecting": "ĐANG KẾT NỐI...",
+                                "disconnect": "NGẮT KẾT NỐI",
+                                  "online": "TRỰC TUYẾN",
+                                    "offline": "NGOẠI TUYẾN",
+                                      "hw_button": "NÚT BẤM HW",
+                                        "std_mode": "Tiêu chuẩn",
+                                          "batch_mode": "Lô",
+                                            "start_scan": "BẮT ĐẦU QUÉT",
+                                              "stop_scan": "DỪNG QUÉT",
+                                                "clear": "XÓA",
+                                                  "export": "XUẤT",
+                                                    "scanning_dots": "Đang quét...",
+                                                      "unique_tags": "Số Thẻ Đơn",
+                                                        "total_reads": "Tổng Số Đọc",
+                                                          "tags_sec": "Thẻ/giây",
+                                                            "avg_rssi": "RSSI Tr.bình",
+                                                              "th_epc": "EPC (HEX)",
+                                                                "th_rssi": "RSSI",
+                                                                  "th_signal": "Tín hiệu",
+                                                                    "th_count": "Số lượng",
+                                                                      "th_last": "Lần cuối",
+                                                                        "th_action": "Thao tác",
+                                                                          "no_tags": "Không có thẻ",
+                                                                            "find_mode": "🎯 Chế độ Tìm - Định vị thẻ",
+                                                                              "target_epc": "EPC mục tiêu (Hex)",
+                                                                                "find": "🔍 Tìm",
+                                                                                  "stop": "■ Dừng",
+                                                                                    "signal_strength": "Cường độ tín hiệu",
+                                                                                      "find_status_target": "Mục tiêu: ",
+                                                                                        "signal_history": "📊 Lịch sử tín hiệu",
+                                                                                          "batch_history_title": "📋 Lịch sử Lô",
+                                                                                            "open_batch_now": "🗂️ Mở Batch Mode ngay",
+                                                                                              "fetch_from_device": "📥 Tải từ thiết bị",
+                                                                                                "export_csv": "📤 Xuất CSV",
+                                                                                                  "no_data": "Không có dữ liệu",
+                                                                                                    "history_hint": "Hãy quét ở Batch Mode trước rồi Tải lại",
+                                                                                                      "rf_power": "📶 Công suất RF",
+                                                                                                        "tx_power": "Công.S TX (dBm)",
+                                                                                                          "action_get": "↓ LẤY",
+                                                                                                            "action_set": "↑ LƯU",
+                                                                                                              "rf_params": "🔧 Thông số RF",
+                                                                                                                "link_profile": "Profile Liên kết",
+                                                                                                                  "lp_std": "53 - T.chuẩn (250Kbps)",
+                                                                                                                    "lp_quick": "11 - Nhanh (640Kbps)",
+                                                                                                                      "lp_deep": "13 - Sâu (40Kbps)",
+                                                                                                                        "qs_title": "📊 Q / Phiên",
+                                                                                                                          "q_value": "Giá trị Q",
+                                                                                                                            "session": "Phiên",
+                                                                                                                              "dev_info": "🌡️ TT thiết bị",
+                                                                                                                                "device": "Thiết bị",
+                                                                                                                                  "temperature": "Nhiệt độ",
+                                                                                                                                    "get_info": "↓ LẤY TT",
+                                                                                                                                      "qp_title": "📊 Tham số truy vấn",
+                                                                                                                                        "interval_ms": "Giãn cách (ms)",
+                                                                                                                                          "dwell_raw": "DWELL (RAW)",
+                                                                                                                                            "append": "Nối dòng",
+                                                                                                                                              "debug_title": "🔧 Log giao tiếp BLE",
+                                                                                                                                                "download": "📥 Tải file",
+                                                                                                                                                  "autoscroll": "Tự đồng cuộn"
       },
-      "en": {
-            "history_instructions": "
+    "en": {
+      "history_instructions": "
             ⚠️ <b style=\"color:var(--warning)\">Important Note:</b><br>
             • <b>Hardware button</b> on device = <b>Interactive mode</b> → <b style=\"color:var(--danger)\">DOES NOT save History</b><br>
-            • To save History: you must use <b style=\"color:var(--accent)\">🗂️ Batch mode from Web UI</b><br>
-            <div style=\"margin-top:8px;padding-top:8px;border-top:1px solid rgba(245,158,11,.2);\">
-              📋 <b>Usage:</b> Scanner Tab → select <b>🗂️ Batch</b> → <b>START SCAN</b> (from web) → finish scan →
-              <b>STOP SCAN</b> → return here to Fetch
-            </div>",
-            "conn_success": "✅ Connected: ",
-            "err_https": "❌ Blocked: Requires HTTPS",
-            "err_gatt": "❌ GATT connection lost. Retry!",
+            • To save History: you must use < b style =\"color:var(--accent)\">🗂️ Batch mode from Web UI</b><br>
+        < div style =\"margin-top:8px;padding-top:8px;border-top:1px solid rgba(245,158,11,.2);\">
+              📋 <b>Usage:</b> Scanner Tab → select < b >🗂️ Batch</b > → <b>START SCAN</b> (from web) → finish scan →
+      <b>STOP SCAN</b> → return here to Fetch
+            </div > ",
+      "conn_success": "✅ Connected: ",
+        "err_https": "❌ Blocked: Requires HTTPS",
+          "err_gatt": "❌ GATT connection lost. Retry!",
             "msg_disconn": "BLE Disconnected",
-            "hw_batch": "🔘 HW Button: Batch Scan (History saved)",
-            "hw_inter": "🔘 HW Button: Interactive Scan (No History)",
-            "hw_stop": "🔘 HW Button: Scan Stopped",
-            "nav_scanner": "Scanner",
-            "nav_locate": "Locate",
-            "nav_history": "History",
-            "nav_settings": "Settings",
-            "nav_debug": "Debug",
-            "connect_ble": "CONNECT BLE",
-            "connecting": "CONNECTING...",
-            "disconnect": "DISCONNECT",
-            "online": "ONLINE",
-            "offline": "OFFLINE",
-            "hw_button": "HW BUTTON",
-            "std_mode": "Standard",
-            "batch_mode": "Batch",
-            "start_scan": "START SCAN",
-            "stop_scan": "STOP SCAN",
-            "clear": "CLEAR",
-            "export": "EXPORT",
-            "scanning_dots": "Scanning...",
-            "unique_tags": "Unique Tags",
-            "total_reads": "Total Reads",
-            "tags_sec": "Tags/sec",
-            "avg_rssi": "Avg RSSI",
-            "th_epc": "EPC (HEX)",
-            "th_rssi": "RSSI",
-            "th_signal": "Signal",
-            "th_count": "Count",
-            "th_last": "Last Seen",
-            "th_action": "Action",
-            "no_tags": "No tags detected",
-            "find_mode": "🎯 Find Mode - Locate Tag",
-            "target_epc": "Target EPC (Hex)",
-            "find": "🔍 Find",
-            "stop": "■ Stop",
-            "signal_strength": "Signal Strength",
-            "find_status_target": "Target: ",
-            "signal_history": "📊 Signal History",
-            "batch_history_title": "📋 Batch Scan History",
-            "open_batch_now": "🗂️ Open Batch Mode now",
-            "fetch_from_device": "📥 Fetch From Device",
-            "export_csv": "📤 Export CSV",
-            "no_data": "No data",
-            "history_hint": "Scan in Batch Mode first and then Fetch",
-            "rf_power": "📶 RF Power",
-            "tx_power": "TX Power (dBm)",
-            "action_get": "↓ GET",
-            "action_set": "↑ SET",
-            "rf_params": "🔧 RF Parameters",
-            "link_profile": "Link Profile",
-            "lp_std": "53 - Standard (250Kbps)",
-            "lp_quick": "11 - Quick (640Kbps)",
-            "lp_deep": "13 - Deep (40Kbps)",
-            "qs_title": "📊 Q / Session",
-            "q_value": "Q Value",
-            "session": "Session",
-            "dev_info": "🌡️ Device Info",
-            "device": "Device",
-            "temperature": "Temperature",
-            "get_info": "↓ GET INFO",
-            "qp_title": "📊 Query Parameter",
-            "interval_ms": "Interval (ms)",
-            "dwell_raw": "DWELL (RAW COUNT)",
-            "append": "Append",
-            "debug_title": "🔧 BLE Communication Log",
-            "download": "📥 Download",
-            "autoscroll": "Auto-scroll"
-      }
+              "hw_batch": "🔘 HW Button: Batch Scan (History saved)",
+                "hw_inter": "🔘 HW Button: Interactive Scan (No History)",
+                  "hw_stop": "🔘 HW Button: Scan Stopped",
+                    "nav_scanner": "Scanner",
+                      "nav_locate": "Locate",
+                        "nav_history": "History",
+                          "nav_settings": "Settings",
+                            "nav_debug": "Debug",
+                              "connect_ble": "CONNECT BLE",
+                                "connecting": "CONNECTING...",
+                                  "disconnect": "DISCONNECT",
+                                    "online": "ONLINE",
+                                      "offline": "OFFLINE",
+                                        "hw_button": "HW BUTTON",
+                                          "std_mode": "Standard",
+                                            "batch_mode": "Batch",
+                                              "start_scan": "START SCAN",
+                                                "stop_scan": "STOP SCAN",
+                                                  "clear": "CLEAR",
+                                                    "export": "EXPORT",
+                                                      "scanning_dots": "Scanning...",
+                                                        "unique_tags": "Unique Tags",
+                                                          "total_reads": "Total Reads",
+                                                            "tags_sec": "Tags/sec",
+                                                              "avg_rssi": "Avg RSSI",
+                                                                "th_epc": "EPC (HEX)",
+                                                                  "th_rssi": "RSSI",
+                                                                    "th_signal": "Signal",
+                                                                      "th_count": "Count",
+                                                                        "th_last": "Last Seen",
+                                                                          "th_action": "Action",
+                                                                            "no_tags": "No tags detected",
+                                                                              "find_mode": "🎯 Find Mode - Locate Tag",
+                                                                                "target_epc": "Target EPC (Hex)",
+                                                                                  "find": "🔍 Find",
+                                                                                    "stop": "■ Stop",
+                                                                                      "signal_strength": "Signal Strength",
+                                                                                        "find_status_target": "Target: ",
+                                                                                          "signal_history": "📊 Signal History",
+                                                                                            "batch_history_title": "📋 Batch Scan History",
+                                                                                              "open_batch_now": "🗂️ Open Batch Mode now",
+                                                                                                "fetch_from_device": "📥 Fetch From Device",
+                                                                                                  "export_csv": "📤 Export CSV",
+                                                                                                    "no_data": "No data",
+                                                                                                      "history_hint": "Scan in Batch Mode first and then Fetch",
+                                                                                                        "rf_power": "📶 RF Power",
+                                                                                                          "tx_power": "TX Power (dBm)",
+                                                                                                            "action_get": "↓ GET",
+                                                                                                              "action_set": "↑ SET",
+                                                                                                                "rf_params": "🔧 RF Parameters",
+                                                                                                                  "link_profile": "Link Profile",
+                                                                                                                    "lp_std": "53 - Standard (250Kbps)",
+                                                                                                                      "lp_quick": "11 - Quick (640Kbps)",
+                                                                                                                        "lp_deep": "13 - Deep (40Kbps)",
+                                                                                                                          "qs_title": "📊 Q / Session",
+                                                                                                                            "q_value": "Q Value",
+                                                                                                                              "session": "Session",
+                                                                                                                                "dev_info": "🌡️ Device Info",
+                                                                                                                                  "device": "Device",
+                                                                                                                                    "temperature": "Temperature",
+                                                                                                                                      "get_info": "↓ GET INFO",
+                                                                                                                                        "qp_title": "📊 Query Parameter",
+                                                                                                                                          "interval_ms": "Interval (ms)",
+                                                                                                                                            "dwell_raw": "DWELL (RAW COUNT)",
+                                                                                                                                              "append": "Append",
+                                                                                                                                                "debug_title": "🔧 BLE Communication Log",
+                                                                                                                                                  "download": "📥 Download",
+                                                                                                                                                    "autoscroll": "Auto-scroll"
+    }
 };
 
     let currentLang = localStorage.getItem('lang') || 'vi';
@@ -1532,7 +1558,7 @@
       return i18n[currentLang][key] || key;
     }
 
-    
+
     function toggleLang(lang) {
       currentLang = lang;
       localStorage.setItem('lang', currentLang);
@@ -1552,12 +1578,12 @@
       // Reassign Tab Titles
       const dynTabTitles = { scanner: '📡 ' + t('nav_scanner'), locate: '🎯 ' + t('nav_locate'), history: '📋 ' + t('nav_history'), settings: '⚙️ ' + t('nav_settings'), debug: '🔧 ' + t('nav_debug') };
       document.querySelectorAll('.nav-item').forEach(el => {
-         const tText = el.textContent;
-         if (tText.includes('📡')) el.innerHTML = '<span class="nav-icon">📡</span> ' + t('nav_scanner');
-         if (tText.includes('🎯')) el.innerHTML = '<span class="nav-icon">🎯</span> ' + t('nav_locate');
-         if (tText.includes('📋')) el.innerHTML = '<span class="nav-icon">📋</span> ' + t('nav_history');
-         if (tText.includes('⚙️')) el.innerHTML = '<span class="nav-icon">⚙️</span> ' + t('nav_settings');
-         if (tText.includes('🔧')) el.innerHTML = '<span class="nav-icon">🔧</span> ' + t('nav_debug');
+        const tText = el.textContent;
+        if (tText.includes('📡')) el.innerHTML = '<span class="nav-icon">📡</span> ' + t('nav_scanner');
+        if (tText.includes('🎯')) el.innerHTML = '<span class="nav-icon">🎯</span> ' + t('nav_locate');
+        if (tText.includes('📋')) el.innerHTML = '<span class="nav-icon">📋</span> ' + t('nav_history');
+        if (tText.includes('⚙️')) el.innerHTML = '<span class="nav-icon">⚙️</span> ' + t('nav_settings');
+        if (tText.includes('🔧')) el.innerHTML = '<span class="nav-icon">🔧</span> ' + t('nav_debug');
       });
 
       const activeTabId = Array.from(document.querySelectorAll('.tab-panel')).find(p => p.classList.contains('active'))?.id;
@@ -1565,9 +1591,7 @@
         const name = activeTabId.replace('tab-', '');
         document.getElementById('topbarTitle').textContent = dynTabTitles[name] || name;
       }
-    }
-);
-    }
+    };
 
     // ═══════════════════════════════════════════════════════════
     // BLE CONFIGURATION
@@ -2178,7 +2202,7 @@
         const tagList = data.epcs || data.tags || data.epc_list || [];
 
         if (tagList.length === 0) {
-          list.innerHTML = '<div style="color:var(--text-dim);text-align:center;padding:30px;"><div style="font-size:32px;margin-bottom:8px;opacity:.3">📭</div><div>'+t('no_data')+'</div><div style="font-size:11px;margin-top:8px;opacity:.6">'+t('history_hint')+'</div></div>';
+          list.innerHTML = '<div style="color:var(--text-dim);text-align:center;padding:30px;"><div style="font-size:32px;margin-bottom:8px;opacity:.3">📭</div><div>' + t('no_data') + '</div><div style="font-size:11px;margin-top:8px;opacity:.6">' + t('history_hint') + '</div></div>';
           return;
         }
 
