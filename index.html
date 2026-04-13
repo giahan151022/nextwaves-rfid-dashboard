@@ -1418,8 +1418,10 @@
         logDebug(`Đang tìm thiết bị: "${BLE_CONFIG.name}"...`, 'info');
 
         bleDevice = await navigator.bluetooth.requestDevice({
-          // acceptAllDevices + khai báo đủ service UUID để Web Bluetooth cho phép truy cập
-          acceptAllDevices: true,
+          filters: [
+            { namePrefix: 'Nextwaves' },
+            { namePrefix: 'NRH-10' }
+          ],
           optionalServices: [
             BLE_CONFIG.serviceUUID,   // 0x00FF — service chính
             BLE_CONFIG.cmdCharUUID,   // 0xFF01 — CMD control
