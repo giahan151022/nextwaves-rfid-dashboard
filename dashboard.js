@@ -4,7 +4,7 @@
     // ═══════════════════════════════════════════════════════════
     const i18n = {
       "vi": {
-            "history_instructions": `
+        "history_instructions": `
             ⚠️ <b style=\"color:var(--warning)\">Lưu ý quan trọng:</b><br>
             • <b>Hardware button</b> trên thiết bị = <b>Interactive mode</b> → <b style=\"color:var(--danger)\">KHÔNG lưu History</b><br>
             • Để có History: phải dùng <b style=\"color:var(--accent)\">🗂️ Batch mode từ Web UI</b><br>
@@ -12,81 +12,83 @@
               📋 <b>Cách dùng:</b> Tab Scanner → chọn <b>🗂️ Batch</b> → <b>START SCAN</b> (từ web) → quét xong →
               <b>STOP SCAN</b> → quay lại đây Fetch
             </div>`,
-            "conn_success": "✅ Đã kết nối: ",
-            "err_https": "❌ Bị chặn: Cần phục vụ qua HTTPS",
-            "err_gatt": "❌ Mất kết nối GATT. Thử lại!",
-            "msg_disconn": "Đã ngắt kết nối BLE",
-            "hw_batch": "🔘 HW Button: Quét Batch (có lưu History)",
-            "hw_inter": "🔘 HW Button: Quét Interactive (không lưu History)",
-            "hw_stop": "🔘 HW Button: Dừng quét",
-            "nav_scanner": "Máy quét",
-            "nav_locate": "Định vị",
-            "nav_history": "Lịch sử",
-            "nav_settings": "Cài đặt",
-            "nav_debug": "Gỡ lỗi",
-            "connect_ble": "KẾT NỐI BLE",
-            "connecting": "ĐANG KẾT NỐI...",
-            "disconnect": "NGẮT KẾT NỐI",
-            "online": "TRỰC TUYẾN",
-            "offline": "NGOẠI TUYẾN",
-            "hw_button": "NÚT BẤM HW",
-            "std_mode": "Tiêu chuẩn",
-            "batch_mode": "Lô",
-            "start_scan": "BẮT ĐẦU QUÉT",
-            "stop_scan": "DỪNG QUÉT",
-            "clear": "XÓA",
-            "export": "XUẤT",
-            "scanning_dots": "Đang quét...",
-            "unique_tags": "Số Thẻ Đơn",
-            "total_reads": "Tổng Số Đọc",
-            "tags_sec": "Thẻ/giây",
-            "avg_rssi": "RSSI Tr.bình",
-            "th_epc": "EPC (HEX)",
-            "th_rssi": "RSSI",
-            "th_signal": "Tín hiệu",
-            "th_count": "Số lượng",
-            "th_last": "Lần cuối",
-            "th_action": "Thao tác",
-            "no_tags": "Không có thẻ",
-            "find_mode": "🎯 Chế độ Tìm - Định vị thẻ",
-            "target_epc": "EPC mục tiêu (Hex)",
-            "find": "🔍 Tìm",
-            "stop": "■ Dừng",
-            "signal_strength": "Cường độ tín hiệu",
-            "find_status_target": "Mục tiêu: ",
-            "signal_history": "📊 Lịch sử tín hiệu",
-            "batch_history_title": "📋 Lịch sử Lô",
-            "open_batch_now": "🗂️ Mở Batch Mode ngay",
-            "fetch_from_device": "📥 Tải từ thiết bị",
-            "export_csv": "📤 Xuất CSV",
-            "no_data": "Không có dữ liệu",
-            "history_hint": "Hãy quét ở Batch Mode trước rồi Tải lại",
-            "rf_power": "📶 Công suất RF",
-            "tx_power": "Công.S TX (dBm)",
-            "action_get": "↓ LẤY",
-            "action_set": "↑ LƯU",
-            "rf_params": "🔧 Thông số RF",
-            "link_profile": "Profile Liên kết",
-            "lp_std": "53 - T.chuẩn (250Kbps)",
-            "lp_quick": "11 - Nhanh (640Kbps)",
-            "lp_deep": "13 - Sâu (40Kbps)",
-            "qs_title": "📊 Q / Phiên",
-            "q_value": "Giá trị Q",
-            "session": "Phiên",
-            "dev_info": "🌡️ TT thiết bị",
-            "device": "Thiết bị",
-            "temperature": "Nhiệt độ",
-            "get_info": "↓ LẤY TT",
-            "qp_title": "📊 Tham số truy vấn",
-            "interval_ms": "Giãn cách (ms)",
-            "dwell_raw": "DWELL (RAW)",
-            "append": "Nối dòng",
-            "debug_title": "🔧 Log giao tiếp BLE",
-            "download": "📥 Tải file",
-            "autoscroll": "Tự đồng cuộn"
+        "conn_success": "✅ Đã kết nối: ",
+        "err_https": "❌ Bị chặn: Cần phục vụ qua HTTPS",
+        "err_gatt": "❌ Mất kết nối GATT. Thử lại!",
+        "msg_disconn": "Đã ngắt kết nối BLE",
+        "hw_batch": "🔘 HW Button: Quét Batch (có lưu History)",
+        "hw_inter": "🔘 HW Button: Quét Interactive (không lưu History)",
+        "hw_stop": "🔘 HW Button: Dừng quét",
+        "nav_scanner": "Máy quét",
+        "nav_locate": "Định vị",
+        "nav_history": "Lịch sử",
+        "nav_settings": "Cài đặt",
+        "nav_debug": "Gỡ lỗi",
+        "connect_ble": "KẾT NỐI BLE",
+        "connecting": "ĐANG KẾT NỐI...",
+        "disconnect": "NGẮT KẾT NỐI",
+        "online": "TRỰC TUYẾN",
+        "offline": "NGOẠI TUYẾN",
+        "hw_button": "NÚT BẤM HW",
+        "std_mode": "Tiêu chuẩn",
+        "batch_mode": "Lô",
+        "start_scan": "BẮT ĐẦU QUÉT",
+        "stop_scan": "DỪNG QUÉT",
+        "clear": "XÓA",
+        "export": "XUẤT",
+        "scanning_dots": "Đang quét...",
+        "unique_tags": "Số Thẻ Đơn",
+        "total_reads": "Tổng Số Đọc",
+        "tags_sec": "Thẻ/giây",
+        "avg_rssi": "RSSI Tr.bình",
+        "th_epc": "EPC (HEX)",
+        "th_rssi": "RSSI",
+        "th_signal": "Tín hiệu",
+        "th_count": "Số lượng",
+        "th_last": "Lần cuối",
+        "th_action": "Thao tác",
+        "no_tags": "Không có thẻ",
+        "find_mode": "🎯 Chế độ Tìm - Định vị thẻ",
+        "target_epc": "EPC mục tiêu (Hex)",
+        "find": "🔍 Tìm",
+        "stop": "■ Dừng",
+        "signal_strength": "Cường độ tín hiệu",
+        "find_status_target": "Mục tiêu: ",
+        "signal_history": "📊 Lịch sử tín hiệu",
+        "batch_history_title": "📋 Lịch sử Lô",
+        "open_batch_now": "🗂️ Mở Batch Mode ngay",
+        "fetch_from_device": "📥 Tải từ thiết bị",
+        "export_csv": "📤 Xuất CSV",
+        "no_data": "Không có dữ liệu",
+        "history_hint": "Hãy quét ở Batch Mode trước rồi Tải lại",
+        "rf_power": "📶 Công suất RF",
+        "tx_power": "Công.S TX (dBm)",
+        "action_get": "↓ LẤY",
+        "action_set": "↑ LƯU",
+        "rf_params": "🔧 Thông số RF",
+        "link_profile": "Profile Liên kết",
+        "lp_std": "53 - T.chuẩn (250Kbps)",
+        "lp_quick": "11 - Nhanh (640Kbps)",
+        "lp_deep": "13 - Sâu (40Kbps)",
+        "qs_title": "📊 Q / Phiên",
+        "q_value": "Giá trị Q",
+        "session": "Phiên",
+        "dev_info": "🌡️ TT thiết bị",
+        "device": "Thiết bị",
+        "temperature": "Nhiệt độ",
+        "get_info": "↓ LẤY TT",
+        "qp_title": "📊 Tham số truy vấn",
+        "interval_ms": "Giãn cách (ms)",
+        "dwell_raw": "DWELL (RAW)",
+        "append": "Nối dòng",
+        "debug_title": "🔧 Log giao tiếp BLE",
+        "download": "📥 Tải file",
+        "autoscroll": "Tự đồng cuộn",
+        "search_placeholder": "Tìm kiếm EPC (Hex)...",
+        "no_tags_search": "Không tìm thấy thẻ khớp"
       },
       "en": {
-            "history_instructions": `
+        "history_instructions": `
             ⚠️ <b style=\"color:var(--warning)\">Important Note:</b><br>
             • <b>Hardware button</b> on device = <b>Interactive mode</b> → <b style=\"color:var(--danger)\">DOES NOT save History</b><br>
             • To save History: you must use <b style=\"color:var(--accent)\">🗂️ Batch mode from Web UI</b><br>
@@ -94,80 +96,82 @@
               📋 <b>Usage:</b> Scanner Tab → select <b>🗂️ Batch</b> → <b>START SCAN</b> (from web) → finish scan →
               <b>STOP SCAN</b> → return here to Fetch
             </div>`,
-            "conn_success": "✅ Connected: ",
-            "err_https": "❌ Blocked: Requires HTTPS",
-            "err_gatt": "❌ GATT connection lost. Retry!",
-            "msg_disconn": "BLE Disconnected",
-            "hw_batch": "🔘 HW Button: Batch Scan (History saved)",
-            "hw_inter": "🔘 HW Button: Interactive Scan (No History)",
-            "hw_stop": "🔘 HW Button: Scan Stopped",
-            "nav_scanner": "Scanner",
-            "nav_locate": "Locate",
-            "nav_history": "History",
-            "nav_settings": "Settings",
-            "nav_debug": "Debug",
-            "connect_ble": "CONNECT BLE",
-            "connecting": "CONNECTING...",
-            "disconnect": "DISCONNECT",
-            "online": "ONLINE",
-            "offline": "OFFLINE",
-            "hw_button": "HW BUTTON",
-            "std_mode": "Standard",
-            "batch_mode": "Batch",
-            "start_scan": "START SCAN",
-            "stop_scan": "STOP SCAN",
-            "clear": "CLEAR",
-            "export": "EXPORT",
-            "scanning_dots": "Scanning...",
-            "unique_tags": "Unique Tags",
-            "total_reads": "Total Reads",
-            "tags_sec": "Tags/sec",
-            "avg_rssi": "Avg RSSI",
-            "th_epc": "EPC (HEX)",
-            "th_rssi": "RSSI",
-            "th_signal": "Signal",
-            "th_count": "Count",
-            "th_last": "Last Seen",
-            "th_action": "Action",
-            "no_tags": "No tags detected",
-            "find_mode": "🎯 Find Mode - Locate Tag",
-            "target_epc": "Target EPC (Hex)",
-            "find": "🔍 Find",
-            "stop": "■ Stop",
-            "signal_strength": "Signal Strength",
-            "find_status_target": "Target: ",
-            "signal_history": "📊 Signal History",
-            "batch_history_title": "📋 Batch Scan History",
-            "open_batch_now": "🗂️ Open Batch Mode now",
-            "fetch_from_device": "📥 Fetch From Device",
-            "export_csv": "📤 Export CSV",
-            "no_data": "No data",
-            "history_hint": "Scan in Batch Mode first and then Fetch",
-            "rf_power": "📶 RF Power",
-            "tx_power": "TX Power (dBm)",
-            "action_get": "↓ GET",
-            "action_set": "↑ SET",
-            "rf_params": "🔧 RF Parameters",
-            "link_profile": "Link Profile",
-            "lp_std": "53 - Standard (250Kbps)",
-            "lp_quick": "11 - Quick (640Kbps)",
-            "lp_deep": "13 - Deep (40Kbps)",
-            "qs_title": "📊 Q / Session",
-            "q_value": "Q Value",
-            "session": "Session",
-            "dev_info": "🌡️ Device Info",
-            "device": "Device",
-            "temperature": "Temperature",
-            "get_info": "↓ GET INFO",
-            "qp_title": "📊 Query Parameter",
-            "interval_ms": "Interval (ms)",
-            "dwell_raw": "DWELL (RAW COUNT)",
-            "append": "Append",
-            "debug_title": "🔧 BLE Communication Log",
-            "download": "📥 Download",
-            "autoscroll": "Auto-scroll"
+        "conn_success": "✅ Connected: ",
+        "err_https": "❌ Blocked: Requires HTTPS",
+        "err_gatt": "❌ GATT connection lost. Retry!",
+        "msg_disconn": "BLE Disconnected",
+        "hw_batch": "🔘 HW Button: Batch Scan (History saved)",
+        "hw_inter": "🔘 HW Button: Interactive Scan (No History)",
+        "hw_stop": "🔘 HW Button: Scan Stopped",
+        "nav_scanner": "Scanner",
+        "nav_locate": "Locate",
+        "nav_history": "History",
+        "nav_settings": "Settings",
+        "nav_debug": "Debug",
+        "connect_ble": "CONNECT BLE",
+        "connecting": "CONNECTING...",
+        "disconnect": "DISCONNECT",
+        "online": "ONLINE",
+        "offline": "OFFLINE",
+        "hw_button": "HW BUTTON",
+        "std_mode": "Standard",
+        "batch_mode": "Batch",
+        "start_scan": "START SCAN",
+        "stop_scan": "STOP SCAN",
+        "clear": "CLEAR",
+        "export": "EXPORT",
+        "scanning_dots": "Scanning...",
+        "unique_tags": "Unique Tags",
+        "total_reads": "Total Reads",
+        "tags_sec": "Tags/sec",
+        "avg_rssi": "Avg RSSI",
+        "th_epc": "EPC (HEX)",
+        "th_rssi": "RSSI",
+        "th_signal": "Signal",
+        "th_count": "Count",
+        "th_last": "Last Seen",
+        "th_action": "Action",
+        "no_tags": "No tags detected",
+        "find_mode": "🎯 Find Mode - Locate Tag",
+        "target_epc": "Target EPC (Hex)",
+        "find": "🔍 Find",
+        "stop": "■ Stop",
+        "signal_strength": "Signal Strength",
+        "find_status_target": "Target: ",
+        "signal_history": "📊 Signal History",
+        "batch_history_title": "📋 Batch Scan History",
+        "open_batch_now": "🗂️ Open Batch Mode now",
+        "fetch_from_device": "📥 Fetch From Device",
+        "export_csv": "📤 Export CSV",
+        "no_data": "No data",
+        "history_hint": "Scan in Batch Mode first and then Fetch",
+        "rf_power": "📶 RF Power",
+        "tx_power": "TX Power (dBm)",
+        "action_get": "↓ GET",
+        "action_set": "↑ SET",
+        "rf_params": "🔧 RF Parameters",
+        "link_profile": "Link Profile",
+        "lp_std": "53 - Standard (250Kbps)",
+        "lp_quick": "11 - Quick (640Kbps)",
+        "lp_deep": "13 - Deep (40Kbps)",
+        "qs_title": "📊 Q / Session",
+        "q_value": "Q Value",
+        "session": "Session",
+        "dev_info": "🌡️ Device Info",
+        "device": "Device",
+        "temperature": "Temperature",
+        "get_info": "↓ GET INFO",
+        "qp_title": "📊 Query Parameter",
+        "interval_ms": "Interval (ms)",
+        "dwell_raw": "DWELL (RAW COUNT)",
+        "append": "Append",
+        "debug_title": "🔧 BLE Communication Log",
+        "download": "📥 Download",
+        "autoscroll": "Auto-scroll",
+        "search_placeholder": "Search EPC (Hex)...",
+        "no_tags_search": "No tags match the search"
       }
-};
+    };
 
     let currentLang = localStorage.getItem('lang') || 'vi';
 
@@ -175,7 +179,7 @@
       return i18n[currentLang][key] || key;
     }
 
-    
+
     function toggleLang(lang) {
       currentLang = lang;
       localStorage.setItem('lang', currentLang);
@@ -195,12 +199,12 @@
       // Reassign Tab Titles
       const dynTabTitles = { scanner: '📡 ' + t('nav_scanner'), locate: '🎯 ' + t('nav_locate'), history: '📋 ' + t('nav_history'), settings: '⚙️ ' + t('nav_settings'), debug: '🔧 ' + t('nav_debug') };
       document.querySelectorAll('.nav-item').forEach(el => {
-         const tText = el.textContent;
-         if (tText.includes('📡')) el.innerHTML = '<span class="nav-icon">📡</span> ' + t('nav_scanner');
-         if (tText.includes('🎯')) el.innerHTML = '<span class="nav-icon">🎯</span> ' + t('nav_locate');
-         if (tText.includes('📋')) el.innerHTML = '<span class="nav-icon">📋</span> ' + t('nav_history');
-         if (tText.includes('⚙️')) el.innerHTML = '<span class="nav-icon">⚙️</span> ' + t('nav_settings');
-         if (tText.includes('🔧')) el.innerHTML = '<span class="nav-icon">🔧</span> ' + t('nav_debug');
+        const tText = el.textContent;
+        if (tText.includes('📡')) el.innerHTML = '<span class="nav-icon">📡</span> ' + t('nav_scanner');
+        if (tText.includes('🎯')) el.innerHTML = '<span class="nav-icon">🎯</span> ' + t('nav_locate');
+        if (tText.includes('📋')) el.innerHTML = '<span class="nav-icon">📋</span> ' + t('nav_history');
+        if (tText.includes('⚙️')) el.innerHTML = '<span class="nav-icon">⚙️</span> ' + t('nav_settings');
+        if (tText.includes('🔧')) el.innerHTML = '<span class="nav-icon">🔧</span> ' + t('nav_debug');
       });
 
       const activeTabId = Array.from(document.querySelectorAll('.tab-panel')).find(p => p.classList.contains('active'))?.id;
@@ -208,6 +212,12 @@
         const name = activeTabId.replace('tab-', '');
         document.getElementById('topbarTitle').textContent = dynTabTitles[name] || name;
       }
+      // Update placeholders
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+      });
+      // Re-render table to update language of empty state
+      if (typeof renderTagTable === 'function') renderTagTable();
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -236,6 +246,35 @@
     let scanStartTime = null;
     let rateInterval = null;
     let locating = false;
+    let renderTaskPending = false;
+    const RENDER_INTERVAL = 200; // ms
+    let lastRenderTime = 0;
+
+    function requestUIRender() {
+      if (renderTaskPending) return;
+      const now = performance.now();
+      const elapsed = now - lastRenderTime;
+
+      if (elapsed >= RENDER_INTERVAL) {
+        renderTaskPending = true;
+        requestAnimationFrame(() => {
+          renderTagTable();
+          updateStats();
+          lastRenderTime = performance.now();
+          renderTaskPending = false;
+        });
+      } else {
+        renderTaskPending = true;
+        setTimeout(() => {
+          requestAnimationFrame(() => {
+            renderTagTable();
+            updateStats();
+            lastRenderTime = performance.now();
+            renderTaskPending = false;
+          });
+        }, RENDER_INTERVAL - elapsed);
+      }
+    }
 
     // ═══════════════════════════════════════════════════════════
     // TAB NAVIGATION
@@ -353,13 +392,13 @@
           || eMsg.includes('User cancelled') || eMsg.includes('no device')) {
           // Người dùng đóng dialog hoặc không chọn thiết bị → im lặng
         } else if (eName === 'SecurityError' || eMsg.includes('secure') || eMsg.includes('https')) {
-          showToast('❌ Bị chặn: Cần HTTPS', 'error');
+          showToast(t('err_https'), 'error');
         } else if (eName === 'NetworkError') {
           showToast(t('err_gatt'), 'error');
         } else if (eName === 'NotSupportedError') {
           showBLEGuide();
         } else {
-          showToast('❌ ' + (eMsg || eName || 'Lỗi không xác định'), 'error');
+          showToast('❌ ' + (eMsg || eName || t('err_gatt')), 'error');
         }
       }
     }
@@ -378,7 +417,7 @@
       setScanUI(false);
       setHWIndicator(false);
       logDebug('Disconnected', 'info');
-      showToast('🔌 Disconnected', 'error');
+      showToast('🔌 ' + t('msg_disconn'), 'error');
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -464,7 +503,7 @@
 
           case 'GT':
             if (data.status === 'err') {
-              document.getElementById('infoTemp').textContent = 'Lỗi!';
+              document.getElementById('infoTemp').textContent = currentLang === 'en' ? 'Error!' : 'Lỗi!';
             } else if (data.val !== undefined) {
               document.getElementById('infoTemp').textContent = data.val + '°C';
             }
@@ -601,8 +640,7 @@
           tags.set(epc, { epc, rssi, count: 1, lastSeen: now });
         }
       });
-      renderTagTable();
-      updateStats();
+      requestUIRender();
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -626,33 +664,60 @@
 
     function renderTagTable() {
       const tbody = document.getElementById('tagTableBody');
-      if (tags.size === 0) {
-        tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div><div data-i18n="no_tags">No tags detected</div></div></td></tr>';
+      const searchQuery = document.getElementById('tagSearchInput').value.trim().toUpperCase();
+
+      // 1. Lấy danh sách thẻ và lọc theo tìm kiếm
+      let filteredTags = [...tags.values()];
+
+      if (searchQuery) {
+        filteredTags = filteredTags.filter(t => t.epc.toUpperCase().includes(searchQuery));
+      }
+
+      // 2. Kiểm tra nếu không có dữ liệu
+      if (filteredTags.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7">
+          <div class="empty-state">
+            <div class="empty-icon">${searchQuery ? '❓' : '📭'}</div>
+            <div>${searchQuery ? t('no_tags_search') : t('no_tags')}</div>
+          </div>
+        </td></tr>`;
         return;
       }
-      const sorted = [...tags.values()].sort((a, b) => b.lastSeen - a.lastSeen);
+
+      // 3. Sắp xếp theo thời gian mới nhất
+      const sorted = filteredTags.sort((a, b) => b.lastSeen - a.lastSeen);
+
+      // 4. Hiển thị bảng
       tbody.innerHTML = sorted.map((t, i) => {
         const rssi = t.rssi;
         const pct = rssiToPct(rssi);
         const rssiClass = rssiToClass(rssi);
         const barColor = rssiToColor(rssi);
-        const t2 = t.lastSeen.toLocaleTimeString();
+        const timeStr = t.lastSeen.toLocaleTimeString();
+
+        // Highlight kết quả tìm kiếm trong chuỗi EPC (tùy chọn)
+        let displayEpc = t.epc;
+        if (searchQuery) {
+          const reg = new RegExp(`(${searchQuery})`, 'gi');
+          displayEpc = t.epc.replace(reg, '<mark style="background:rgba(0,212,255,0.4);color:white;">$1</mark>');
+        }
+
         return `<tr>
-      <td style="color:var(--text-dim)">${i + 1}</td>
-      <td class="epc-cell">${t.epc}</td>
-      <td class="rssi-cell ${rssiClass}">${rssi} dBm</td>
-      <td>
-        <div class="rssi-bar-wrap">
-          <div class="rssi-bar"><div class="rssi-bar-fill" style="width:${pct}%;background:${barColor}"></div></div>
-          <span style="font-size:11px;color:var(--text-dim)">${pct}%</span>
-        </div>
-      </td>
-      <td><span class="count-badge">${t.count}</span></td>
-      <td style="color:var(--text-dim);font-size:12px;">${t2}</td>
-      <td>
-        <button class="btn btn-outline btn-sm" onclick="locateTag('${t.epc}')" style="padding:3px 8px;font-size:11px;">🎯</button>
-      </td>
-    </tr>`;
+          <td style="color:var(--text-dim)">${i + 1}</td>
+          <td class="epc-cell">${displayEpc}</td>
+          <td class="rssi-cell ${rssiClass}">${rssi} dBm</td>
+          <td>
+            <div class="rssi-bar-wrap">
+              <div class="rssi-bar"><div class="rssi-bar-fill" style="width:${pct}%;background:${barColor}"></div></div>
+              <span style="font-size:11px;color:var(--text-dim)">${pct}%</span>
+            </div>
+          </td>
+          <td><span class="count-badge">${t.count}</span></td>
+          <td style="color:var(--text-dim);font-size:12px;">${timeStr}</td>
+          <td>
+            <button class="btn btn-outline btn-sm" onclick="locateTag('${t.epc}')" style="padding:3px 8px;font-size:11px;">🎯</button>
+          </td>
+        </tr>`;
       }).join('');
     }
 
@@ -703,7 +768,7 @@
 
     async function startLocate() {
       const epc = document.getElementById('locateEpc').value.trim();
-      if (!epc) { showToast('Nhập EPC cần tìm', 'error'); return; }
+      if (!epc) { showToast(t('find'), 'error'); return; }
       locating = true;
       document.getElementById('locateEpcDisplay').textContent = t('find_status_target') + epc;
       document.getElementById('locateBtn').disabled = true;
@@ -718,7 +783,7 @@
       document.getElementById('locateBtn').disabled = false;
       document.getElementById('stopLocateBtn').disabled = true;
       updateSignal(0);
-      showToast('Stopped locate', 'info');
+      showToast(t('stop') + ' locate', 'info');
     }
 
     function handleLocateResult(data) {
@@ -758,14 +823,14 @@
       if (seq === 0xFFFF) {
         fileBuffer = [];
         logDebug('File transfer START', 'info');
-        document.getElementById('historyStatus').textContent = '📥 Receiving...';
+        document.getElementById('historyStatus').textContent = currentLang === 'vi' ? '📥 Đang nhận...' : '📥 Receiving...';
       } else if (seq === 0xFFFE) {
         const blob = new Blob(fileBuffer, { type: 'application/json' });
         blob.text().then(text => {
           logDebug('📄 File RAW (' + text.length + ' bytes): ' + text.substring(0, 300), 'info');
           renderHistory(text);
         });
-        document.getElementById('historyStatus').textContent = '✅ Transfer complete';
+        document.getElementById('historyStatus').textContent = currentLang === 'vi' ? '✅ Nhận xong' : '✅ Transfer complete';
       } else {
         const chunk = buf.buffer.slice(2);
         fileBuffer.push(chunk);
@@ -774,24 +839,24 @@
 
     async function fetchHistory() {
       if (!isConnected) {
-        showToast('❌ Chưa kết nối BLE!', 'error');
-        document.getElementById('historyStatus').textContent = '⚠️ Chưa kết nối thiết bị.';
+        showToast('❌ ' + t('connect_ble'), 'error');
+        document.getElementById('historyStatus').textContent = '⚠️ ' + (currentLang === 'vi' ? 'Chưa kết nối thiết bị.' : 'Device not connected.');
         return;
       }
       if (!fileCtrlChar) {
-        showToast('❌ Không tìm thấy File Control characteristic!', 'error');
-        document.getElementById('historyStatus').textContent = '❌ File Control char (0xFF02) không khả dụng.';
+        showToast('❌ File Control char not found!', 'error');
+        document.getElementById('historyStatus').textContent = '❌ File Control char (0xFF02) ' + (currentLang === 'vi' ? 'không khả dụng.' : 'not available.');
         return;
       }
       fileBuffer = [];
       document.getElementById('historyList').innerHTML = '';
-      document.getElementById('historyStatus').textContent = '⏳ Requesting...';
-      logDebug('Gửi lệnh send_file → 0xFF02...', 'info');
+      document.getElementById('historyStatus').textContent = '⏳ ' + (currentLang === 'vi' ? 'Đang yêu cầu...' : 'Requesting...');
+      logDebug('Sending send_file → 0xFF02...', 'info');
 
       const timeout = setTimeout(() => {
-        if (document.getElementById('historyStatus').textContent === '⏳ Requesting...') {
-          document.getElementById('historyStatus').textContent = '⚠️ Không nhận được phản hồi từ thiết bị.';
-          showToast('⏱️ Timeout: thiết bị không phản hồi', 'error');
+        if (document.getElementById('historyStatus').textContent.includes('Requesting') || document.getElementById('historyStatus').textContent.includes('yêu cầu')) {
+          document.getElementById('historyStatus').textContent = '⚠️ ' + (currentLang === 'vi' ? 'Không nhận được phản hồi từ thiết bị.' : 'No response from device.');
+          showToast('⏱️ ' + (currentLang === 'vi' ? 'Timeout: thiết bị không phản hồi' : 'Timeout: device not responding'), 'error');
         }
       }, 10000);
 
@@ -803,8 +868,8 @@
       } catch (e) {
         clearTimeout(timeout);
         const msg = e?.message || e?.toString?.() || 'unknown';
-        document.getElementById('historyStatus').textContent = '❌ Lỗi: ' + msg;
-        showToast('❌ Lỗi gửi lệnh: ' + msg, 'error');
+        document.getElementById('historyStatus').textContent = '❌ ' + msg;
+        showToast('❌ ' + (currentLang === 'vi' ? 'Lỗi gửi lệnh: ' : 'Command error: ') + msg, 'error');
         logDebug('File Control write error: ' + msg, 'err');
       }
     }
@@ -819,7 +884,7 @@
         const tagList = data.epcs || data.tags || data.epc_list || [];
 
         if (tagList.length === 0) {
-          list.innerHTML = '<div style="color:var(--text-dim);text-align:center;padding:30px;"><div style="font-size:32px;margin-bottom:8px;opacity:.3">📭</div><div>'+t('no_data')+'</div><div style="font-size:11px;margin-top:8px;opacity:.6">'+t('history_hint')+'</div></div>';
+          list.innerHTML = '<div style="color:var(--text-dim);text-align:center;padding:30px;"><div style="font-size:32px;margin-bottom:8px;opacity:.3">📭</div><div>' + t('no_data') + '</div><div style="font-size:11px;margin-top:8px;opacity:.6">' + t('history_hint') + '</div></div>';
           return;
         }
 
@@ -835,7 +900,7 @@
           <button class="btn btn-outline btn-sm" onclick="locateTag('${epc}')" style="padding:3px 8px;font-size:11px;">🎯 Find</button>
         </div>`;
         }).join('');
-        document.getElementById('historyStatus').textContent = `✅ ${tagList.length} tags loaded`;
+        document.getElementById('historyStatus').textContent = `✅ ${tagList.length} ` + (currentLang === 'vi' ? 'thẻ đã tải' : 'tags loaded');
       } catch (e) {
         logDebug('History parse error: ' + e.message + ' | raw: ' + json.substring(0, 300), 'err');
         document.getElementById('historyList').innerHTML =
@@ -1098,4 +1163,3 @@
     logDebug('Nextwaves RFID Dashboard v2.0 ready', 'info');
     logDebug('Chờ kết nối BLE... (Chrome required)', 'info');
     logDebug('ENV: ' + getBLEEnv() + ' | BT: ' + (navigator.bluetooth ? 'available ✓' : 'MISSING ✗') + ' | ' + navigator.userAgent.substring(0, 100), 'info');
-  
