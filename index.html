@@ -425,6 +425,10 @@
       font-size: 13px;
     }
 
+    #tagTable {
+      table-layout: fixed;
+    }
+
     thead th {
       background: var(--bg-card2);
       padding: 10px 14px;
@@ -1156,13 +1160,13 @@
             <table id="tagTable">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th data-i18n="th_epc">EPC (HEX)</th>
-                  <th data-i18n="th_rssi">RSSI</th>
-                  <th data-i18n="th_signal">Signal</th>
-                  <th data-i18n="th_count">Count</th>
-                  <th data-i18n="th_last">Last Seen</th>
-                  <th data-i18n="th_action">Action</th>
+                  <th style="width: 45px;">#</th>
+                  <th data-i18n="th_epc" style="width: 35%;">EPC (HEX)</th>
+                  <th data-i18n="th_rssi" style="width: 85px;">RSSI</th>
+                  <th data-i18n="th_signal" style="width: 110px;">Signal</th>
+                  <th data-i18n="th_count" style="width: 75px;">Count</th>
+                  <th data-i18n="th_last" style="width: 100px;">Last Seen</th>
+                  <th data-i18n="th_action" style="width: 60px;">Action</th>
                 </tr>
               </thead>
               <tbody id="tagTableBody">
