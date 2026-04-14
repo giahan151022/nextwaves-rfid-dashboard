@@ -258,19 +258,25 @@
       if (elapsed >= RENDER_INTERVAL) {
         renderTaskPending = true;
         requestAnimationFrame(() => {
-          renderTagTable();
-          updateStats();
-          lastRenderTime = performance.now();
-          renderTaskPending = false;
+          try {
+            renderTagTable();
+            updateStats();
+          } finally {
+            lastRenderTime = performance.now();
+            renderTaskPending = false;
+          }
         });
       } else {
         renderTaskPending = true;
         setTimeout(() => {
           requestAnimationFrame(() => {
-            renderTagTable();
-            updateStats();
-            lastRenderTime = performance.now();
-            renderTaskPending = false;
+            try {
+              renderTagTable();
+              updateStats();
+            } finally {
+              lastRenderTime = performance.now();
+              renderTaskPending = false;
+            }
           });
         }, RENDER_INTERVAL - elapsed);
       }
@@ -571,15 +577,21 @@
     let webCmdPending = null; // track lệnh web đang chờ reply
 
     async function doStartScan() {
-      const cmd = currentMode === 'batch' ? { cmd: 'SB' } : { cmd: 'S' };
+      const mode = currentMode;
+      const cmd = mode === 'batch' ? { cmd: 'SB' } : { cmd: 'S' };
       webCmdPending = 'start';
-      await sendCmd(cmd);
-      // KHÔNG set isScanning=true ngay — chờ firmware confirm qua live_tags
-      // Nhưng vẫn cập nhật UI để người dùng biết đang chờ
-      setScanUI(true);
-      scanStartTime = Date.now();
-      startRateTimer();
-      isScanning = true;
+
+      // Set scanning state BEFORE sending command to catch early notifications
+      setIsScanning(true);
+
+      try {
+        await sendCmd(cmd);
+      } catch (e) {
+        // In case of immediate BLE write failure, revert state
+        setIsScanning(false);
+        webCmdPending = null;
+        showToast('TX Error: ' + (e?.message || 'failed'), 'error');
+      }
     }
 
     async function doStopScan() {
