@@ -2006,17 +2006,8 @@
           tags.set(epc, { epc, rssi, count: 1, lastSeen: now });
         }
       });
-      throttledRenderTagTable();
+      renderTagTable();
       updateStats();
-    }
-
-    let renderTimeout = null;
-    function throttledRenderTagTable() {
-      if (renderTimeout) return;
-      renderTimeout = setTimeout(() => {
-        renderTagTable();
-        renderTimeout = null;
-      }, 100); // Render at most 10 times per second to prevent UI freeze
     }
 
     // ═══════════════════════════════════════════════════════════
