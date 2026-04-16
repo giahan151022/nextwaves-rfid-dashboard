@@ -618,6 +618,7 @@
           case 'GLP':
             if (data.val !== undefined) document.getElementById('linkProfile').value = data.val;
             break;
+        }
     }
 
     // ═══════════════════════════════════════════════════════════
