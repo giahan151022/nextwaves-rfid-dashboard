@@ -533,11 +533,9 @@
           case 'S':
             if (data.status === 'ok') {
               if (webCmdPending === 'start') {
-                // Reply cho lệnh S do web gửi → confirm OK, bỏ qua HW indicator
                 webCmdPending = null;
                 logDebug('✓ Web START confirmed', 'info');
               } else if (!isScanning) {
-                // S đến không phải do web → hardware button
                 const isBatch = data.mode === 'batch';
                 currentMode = isBatch ? 'batch' : 'std';
                 document.getElementById('modeStd').classList.toggle('active', !isBatch);
@@ -552,6 +550,24 @@
                   showToast(t('hw_inter'), 'hw');
                 }
               }
+            } else if (data.status === 'err') {
+              logDebug(`❌ START Error: ${data.code || 'unknown'}`, 'err');
+              setIsScanning(false);
+              showToast(t('msg_error') + ' (S)', 'error');
+            }
+            break;
+
+          // Xử lý lỗi SMASK (Thường gây treo Dashboard nếu không bắt)
+          case 'SMASK':
+            if (data.status === 'err') {
+              let reason = data.code === 254 ? 'Busy/Operation Failed' : 'Hardware Error';
+              logDebug(`❌ SMASK Error: ${data.code} (${reason})`, 'err');
+              if (isScanning) {
+                logDebug('⚠️ Hardware failed at SMASK, forcing UI stop.', 'err');
+                setIsScanning(false);
+                setHWIndicator(false);
+              }
+              showToast(t('msg_error') + ' (SMASK: ' + reason + ')', 'error');
             }
             break;
 
