@@ -375,9 +375,15 @@
         setControlsEnabled(true);
         logDebug(`Chars: CMD=${!!cmdChar} FileCtrl=${!!fileCtrlChar} FileData=${!!fileDataChar}`, 'info');
 
-        // Auto-fetch device info
-        setTimeout(() => sendCmd({ cmd: 'DI' }), 600);
-        //setTimeout(() => sendCmd({cmd:'GB'}), 1200);
+        // Clean Connection: Gửi lệnh Stop ngay khi kết nối để đưa thiết bị về trạng thái Idle
+        // Giúp tránh lỗi "Busy (254)" khi người dùng reset phần cứng và kết nối lại ngay.
+        sendCmd({ cmd: 'X' }); 
+
+        // Đợi thiết bị ổn định hơn rồi mới lấy thông tin
+        setTimeout(() => {
+          sendCmd({ cmd: 'DI' });
+          logDebug('Dashboard READY. Vui lòng đợi 1-2s sau khi Reset trước khi bắt đầu quét.', 'success');
+        }, 1200);
 
       } catch (e) {
         setBLEUI('disconnected');
@@ -560,10 +566,14 @@
           // Xử lý lỗi SMASK (Thường gây treo Dashboard nếu không bắt)
           case 'SMASK':
             if (data.status === 'err') {
-              let reason = data.code === 254 ? 'Busy/Operation Failed' : 'Hardware Error';
+              let reason = data.code === 254 ? 'Busy (Thiết bị đang bận/Máy đang khởi động)' : 'Hardware Error';
               logDebug(`❌ SMASK Error: ${data.code} (${reason})`, 'err');
+              
+              // Tự động gửi lệnh Stop khôi phục để dọn dẹp trạng thái cho lần quét sau
+              sendCmd({ cmd: 'X' }); 
+
               if (isScanning) {
-                logDebug('⚠️ Hardware failed at SMASK, forcing UI stop.', 'err');
+                logDebug('⚠️ Hardware failed at SMASK. Tự động reset trạng thái. Vui lòng thử lại sau 2s.', 'err');
                 setIsScanning(false);
                 setHWIndicator(false);
               }
@@ -673,13 +683,15 @@
       const cmd = mode === 'batch' ? { cmd: 'SB' } : { cmd: 'S' };
       webCmdPending = 'start';
 
-      // Set scanning state BEFORE sending command to catch early notifications
-      setIsScanning(true);
-
+      // Khởi động đồng bộ: Luôn đảm bảo thiết bị dừng trước khi bắt đầu
       try {
+        logDebug('🔄 Synchronizing hardware state...', 'info');
+        await sendCmd({ cmd: 'X' }); 
+        await new Promise(r => setTimeout(r, 200)); // Nghỉ 200ms để module RFID ổn định
+        
+        setIsScanning(true);
         await sendCmd(cmd);
       } catch (e) {
-        // In case of immediate BLE write failure, revert state
         setIsScanning(false);
         webCmdPending = null;
         showToast('TX Error: ' + (e?.message || 'failed'), 'error');
