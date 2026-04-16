@@ -419,6 +419,7 @@
     function onDisconnected() {
       isConnected = false; isScanning = false;
       cmdChar = null; fileCtrlChar = null; fileDataChar = null;
+      msgBuffer = ''; // Dọn dẹp bộ đệm khi ngắt kết nối
       setBLEUI('disconnected');
       setControlsEnabled(false);
       setScanUI(false);
@@ -447,9 +448,17 @@
       const chunk = new TextDecoder('utf-8').decode(event.target.value);
       msgBuffer += chunk;
 
+      // Giới hạn kích thước bộ đệm để tránh "ngộ độc" dữ liệu và quá tải bộ nhớ
+      const MAX_BUFFER = 16384; // 16KB
+      if (msgBuffer.length > MAX_BUFFER) {
+        logDebug(`⚠️ Buffer overflow (${msgBuffer.length} bytes). Discarding garbage.`, 'err');
+        const lastBrace = msgBuffer.lastIndexOf('{');
+        if (lastBrace !== -1) msgBuffer = msgBuffer.substring(lastBrace);
+        else msgBuffer = '';
+      }
+
       // Kỹ thuật Brace Counting: Bóc tách từng đối tượng JSON hoàn chỉnh { ... }
-      // Giúp xử lý cả trường hợp tin nhắn bị phân mảnh hoặc bị dính cục
-      while (true) {
+      while (msgBuffer.length > 0) {
         let start = msgBuffer.indexOf('{');
         if (start === -1) {
           // Nếu không tìm thấy dấu mở ngoặc nào, xóa sạch bộ đệm rác
@@ -667,6 +676,7 @@
       isScanning = val;
       setScanUI(val);
       if (val) {
+        msgBuffer = ''; // Dọn sạch bộ đệm khi bắt đầu nhịp quét mới
         scanStartTime = Date.now();
         startRateTimer();
       } else {
