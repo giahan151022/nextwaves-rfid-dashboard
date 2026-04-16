@@ -1068,9 +1068,6 @@
       <div class="nav-item" onclick="switchTab('settings');closeSidebar()">
         <span class="nav-icon">⚙️</span> <span data-i18n="nav_settings">Settings</span>
       </div>
-      <div class="nav-item" onclick="switchTab('debug');closeSidebar()">
-        <span class="nav-icon">🔧</span> <span data-i18n="nav_debug">Debug</span>
-      </div>
     </div>
     <div class="sidebar-footer">
       <button class="ble-btn disconnected" id="bleBtn" onclick="closeSidebar();toggleBLE()">
@@ -1373,11 +1370,9 @@
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- DEBUG TAB -->
-      <div class="tab-panel" id="tab-debug">
-        <div class="card">
+        <!-- DEBUG section integrated into Settings -->
+        <div class="card" style="margin-top:20px; border-top: 2px solid var(--border);">
           <div class="card-title" data-i18n="debug_title">🔧 BLE Communication Log</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
             <button class="btn btn-outline btn-sm" onclick="clearDebug()">🗑️ <span

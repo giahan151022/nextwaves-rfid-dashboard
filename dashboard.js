@@ -197,14 +197,13 @@
       }
 
       // Reassign Tab Titles
-      const dynTabTitles = { scanner: '📡 ' + t('nav_scanner'), locate: '🎯 ' + t('nav_locate'), history: '📋 ' + t('nav_history'), settings: '⚙️ ' + t('nav_settings'), debug: '🔧 ' + t('nav_debug') };
+      const dynTabTitles = { scanner: '📡 ' + t('nav_scanner'), locate: '🎯 ' + t('nav_locate'), history: '📋 ' + t('nav_history'), settings: '⚙️ ' + t('nav_settings') };
       document.querySelectorAll('.nav-item').forEach(el => {
         const tText = el.textContent;
         if (tText.includes('📡')) el.innerHTML = '<span class="nav-icon">📡</span> ' + t('nav_scanner');
         if (tText.includes('🎯')) el.innerHTML = '<span class="nav-icon">🎯</span> ' + t('nav_locate');
         if (tText.includes('📋')) el.innerHTML = '<span class="nav-icon">📋</span> ' + t('nav_history');
         if (tText.includes('⚙️')) el.innerHTML = '<span class="nav-icon">⚙️</span> ' + t('nav_settings');
-        if (tText.includes('🔧')) el.innerHTML = '<span class="nav-icon">🔧</span> ' + t('nav_debug');
       });
 
       const activeTabId = Array.from(document.querySelectorAll('.tab-panel')).find(p => p.classList.contains('active'))?.id;
@@ -286,7 +285,7 @@
     // ═══════════════════════════════════════════════════════════
     // TAB NAVIGATION
     // ═══════════════════════════════════════════════════════════
-    const tabTitles = { scanner: '📡 ' + (t('nav_scanner') || 'Scanner'), locate: '🎯 ' + (t('nav_locate') || 'Locate'), history: '📋 ' + (t('nav_history') || 'History'), settings: '⚙️ ' + (t('nav_settings') || 'Settings'), debug: '🔧 ' + (t('nav_debug') || 'Debug') };
+    const tabTitles = { scanner: '📡 ' + (t('nav_scanner') || 'Scanner'), locate: '🎯 ' + (t('nav_locate') || 'Locate'), history: '📋 ' + (t('nav_history') || 'History'), settings: '⚙️ ' + (t('nav_settings') || 'Settings') };
     function switchTab(name) {
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -494,7 +493,14 @@
           // Đã tìm thấy một đối tượng JSON hoàn chỉnh
           const jsonStr = msgBuffer.substring(0, end + 1);
           msgBuffer = msgBuffer.substring(end + 1);
-          processRawJSON(jsonStr.trim());
+          
+          try {
+            processRawJSON(jsonStr.trim());
+          } catch (err) {
+            logDebug(`❌ Logic Error: ${err.message}`, 'err');
+            // Nếu có lỗi logic nghiêm trọng, reset buffer để đảm bảo không bị kẹt
+            msgBuffer = ''; 
+          }
         } else {
           // Chưa đủ dữ liệu cho một thực thể JSON, đợi mảnh tiếp theo
           break;
