@@ -248,6 +248,9 @@
     let renderTaskPending = false;
     const RENDER_INTERVAL = 200; // ms
     let lastRenderTime = 0;
+
+    let scanRetryCount = 0; // Đếm số lần tự động thử lại khi gặp lỗi phần cứng
+    const MAX_SCAN_RETRIES = 3; 
     let msgBuffer = ''; // Bộ đệm hội tụ các mảnh tin nhắn BLE
 
     function requestUIRender() {
@@ -538,6 +541,7 @@
           // Hardware button pressed → Start scan (mode tùy firmware gửi)
           case 'S':
             if (data.status === 'ok') {
+              scanRetryCount = 0; // Reset bô đếm khi Start thành công
               if (webCmdPending === 'start') {
                 webCmdPending = null;
                 logDebug('✓ Web START confirmed', 'info');
@@ -557,27 +561,14 @@
                 }
               }
             } else if (data.status === 'err') {
-              logDebug(`❌ START Error: ${data.code || 'unknown'}`, 'err');
-              setIsScanning(false);
-              showToast(t('msg_error') + ' (S)', 'error');
+              handleScanError('START (S)', data.code);
             }
             break;
 
           // Xử lý lỗi SMASK (Thường gây treo Dashboard nếu không bắt)
           case 'SMASK':
             if (data.status === 'err') {
-              let reason = data.code === 254 ? 'Busy (Thiết bị đang bận/Máy đang khởi động)' : 'Hardware Error';
-              logDebug(`❌ SMASK Error: ${data.code} (${reason})`, 'err');
-              
-              // Tự động gửi lệnh Stop khôi phục để dọn dẹp trạng thái cho lần quét sau
-              sendCmd({ cmd: 'X' }); 
-
-              if (isScanning) {
-                logDebug('⚠️ Hardware failed at SMASK. Tự động reset trạng thái. Vui lòng thử lại sau 2s.', 'err');
-                setIsScanning(false);
-                setHWIndicator(false);
-              }
-              showToast(t('msg_error') + ' (SMASK: ' + reason + ')', 'error');
+              handleScanError('SMASK', data.code);
             }
             break;
 
@@ -662,6 +653,31 @@
         }
     }
 
+    /**
+     * Hàm xử lý lỗi khi quét: Tự động thử lại nếu có thể
+     */
+    function handleScanError(cmdName, code) {
+      const reason = code === 254 ? 'Busy (Thiết bị bận/Máy đang khởi động)' : `Hardware Error (${code})`;
+      logDebug(`❌ ${cmdName} Error: ${code} (${reason})`, 'err');
+
+      // Luôn gửi Stop để dọn dẹp phần cứng
+      sendCmd({ cmd: 'X' });
+
+      if (scanRetryCount < MAX_SCAN_RETRIES) {
+        scanRetryCount++;
+        logDebug(`🔄 [Auto-Retry ${scanRetryCount}/${MAX_SCAN_RETRIES}] Đang khởi động lại nhịp quét sau 500ms...`, 'warn');
+        setTimeout(() => {
+          doStartScan();
+        }, 500);
+      } else {
+        logDebug('❌ Đã đạt giới hạn thử lại tự động. Vui lòng kiểm tra tay cầm hoặc chờ 2 giây.', 'err');
+        setIsScanning(false);
+        setHWIndicator(false);
+        showToast(`${t('msg_error')} (${cmdName}: ${reason})`, 'error');
+        scanRetryCount = 0;
+      }
+    }
+
     // ═══════════════════════════════════════════════════════════
     // SCAN CONTROL
     // ═══════════════════════════════════════════════════════════
@@ -701,6 +717,7 @@
     async function doStopScan() {
       const cmd = currentMode === 'batch' ? { cmd: 'XB' } : { cmd: 'X' };
       webCmdPending = 'stop';
+      scanRetryCount = 0; // Dừng thủ công thì reset đếm
       await sendCmd(cmd);
       setIsScanning(false);
     }
@@ -740,6 +757,7 @@
     // ═══════════════════════════════════════════════════════════
     function processLiveTags(tagList) {
       const now = new Date();
+      scanRetryCount = 0; // Nhận được thẻ thành công thì reset bộ đếm thử lại
       tagList.forEach(t => {
         const epc = t.epc || t.e;
         // ZK E710: firmware gửi RSSI là số âm đúng (ví dụ -68, -70)
