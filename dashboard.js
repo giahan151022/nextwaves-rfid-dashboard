@@ -249,6 +249,7 @@
     let renderTaskPending = false;
     const RENDER_INTERVAL = 200; // ms
     let lastRenderTime = 0;
+    let msgBuffer = ''; // Bộ đệm hội tụ các mảnh tin nhắn BLE
 
     function requestUIRender() {
       if (renderTaskPending) return;
@@ -443,10 +444,53 @@
     // NOTIFICATION HANDLER ← THE KEY FIX IS HERE
     // ═══════════════════════════════════════════════════════════
     function onCmdNotification(event) {
-      const raw = new TextDecoder('utf-8').decode(event.target.value);
+      const chunk = new TextDecoder('utf-8').decode(event.target.value);
+      msgBuffer += chunk;
+
+      // Xử lý theo từng dòng (nếu firmware gửi \n) hoặc xử lý các đối tượng JSON hoàn chỉnh
+      let boundary = msgBuffer.lastIndexOf('\n');
+      
+      // Nếu không có \n, chúng ta có thể thử tìm dấu đóng ngoặc } cuối cùng 
+      // Nhưng an toàn nhất là dùng \n nếu firmware hỗ trợ.
+      // Nếu không có \n, chúng ta sẽ thử parse toàn bộ buffer nếu nó bắt đầu bằng { và kết thúc bằng }
+      
+      if (boundary !== -1) {
+        let completeData = msgBuffer.substring(0, boundary);
+        msgBuffer = msgBuffer.substring(boundary + 1);
+
+        let lines = completeData.split('\n');
+        for (let line of lines) {
+          processRawJSON(line.trim());
+        }
+      } else {
+        // Thử parse nếu buffer có vẻ chứa một JSON hoàn chỉnh (bắt đầu { và kết thúc })
+        let trimmed = msgBuffer.trim();
+        if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
+          if (processRawJSON(trimmed)) {
+            msgBuffer = ''; // Xóa buffer nếu parse thành công
+          }
+        }
+      }
+    }
+
+    function processRawJSON(raw) {
+      if (!raw) return false;
       try {
         const data = JSON.parse(raw);
         if (data.cmd !== 'live_tags') logDebug('RX: ' + raw, 'rx');
+        handleData(data);
+        return true;
+      } catch (e) {
+        // Nếu parse lỗi, có thể do chưa nhận đủ (fragmented)
+        // Chỉ log lỗi nếu chuỗi trông có vẻ đã kết thúc (có dấu })
+        if (raw.endsWith('}')) {
+          logDebug('RX Parse Error: ' + raw.substring(0, 50) + '...', 'err');
+        }
+        return false;
+      }
+    }
+
+    function handleData(data) {
 
         switch (data.cmd) {
 
@@ -554,10 +598,6 @@
           case 'GLP':
             if (data.val !== undefined) document.getElementById('linkProfile').value = data.val;
             break;
-        }
-      } catch (e) {
-        logDebug('RX Parse Error: ' + raw, 'err');
-      }
     }
 
     // ═══════════════════════════════════════════════════════════
