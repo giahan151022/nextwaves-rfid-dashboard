@@ -250,7 +250,7 @@
     let lastRenderTime = 0;
 
     let scanRetryCount = 0; // Đếm số lần tự động thử lại khi gặp lỗi phần cứng
-    const MAX_SCAN_RETRIES = 3; 
+    const MAX_SCAN_RETRIES = 5; 
     let msgBuffer = ''; // Bộ đệm hội tụ các mảnh tin nhắn BLE
 
     function requestUIRender() {
@@ -703,7 +703,7 @@
       try {
         logDebug('🔄 Synchronizing hardware state...', 'info');
         await sendCmd({ cmd: 'X' }); 
-        await new Promise(r => setTimeout(r, 200)); // Nghỉ 200ms để module RFID ổn định
+        await new Promise(r => setTimeout(r, 400)); // Tăng từ 200ms lên 400ms để module RFID ổn định hoàn toàn
         
         setIsScanning(true);
         await sendCmd(cmd);
