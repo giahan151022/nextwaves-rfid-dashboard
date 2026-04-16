@@ -447,28 +447,48 @@
       const chunk = new TextDecoder('utf-8').decode(event.target.value);
       msgBuffer += chunk;
 
-      // Xử lý theo từng dòng (nếu firmware gửi \n) hoặc xử lý các đối tượng JSON hoàn chỉnh
-      let boundary = msgBuffer.lastIndexOf('\n');
-      
-      // Nếu không có \n, chúng ta có thể thử tìm dấu đóng ngoặc } cuối cùng 
-      // Nhưng an toàn nhất là dùng \n nếu firmware hỗ trợ.
-      // Nếu không có \n, chúng ta sẽ thử parse toàn bộ buffer nếu nó bắt đầu bằng { và kết thúc bằng }
-      
-      if (boundary !== -1) {
-        let completeData = msgBuffer.substring(0, boundary);
-        msgBuffer = msgBuffer.substring(boundary + 1);
-
-        let lines = completeData.split('\n');
-        for (let line of lines) {
-          processRawJSON(line.trim());
+      // Kỹ thuật Brace Counting: Bóc tách từng đối tượng JSON hoàn chỉnh { ... }
+      // Giúp xử lý cả trường hợp tin nhắn bị phân mảnh hoặc bị dính cục
+      while (true) {
+        let start = msgBuffer.indexOf('{');
+        if (start === -1) {
+          // Nếu không tìm thấy dấu mở ngoặc nào, xóa sạch bộ đệm rác
+          msgBuffer = '';
+          break;
         }
-      } else {
-        // Thử parse nếu buffer có vẻ chứa một JSON hoàn chỉnh (bắt đầu { và kết thúc })
-        let trimmed = msgBuffer.trim();
-        if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
-          if (processRawJSON(trimmed)) {
-            msgBuffer = ''; // Xóa buffer nếu parse thành công
+
+        // Loại bỏ mọi dữ liệu rác trước dấu { đầu tiên
+        if (start > 0) {
+          msgBuffer = msgBuffer.substring(start);
+        }
+
+        let depth = 0;
+        let end = -1;
+        let foundBrace = false;
+
+        for (let i = 0; i < msgBuffer.length; i++) {
+          if (msgBuffer[i] === '{') {
+            depth++;
+            foundBrace = true;
+          } else if (msgBuffer[i] === '}') {
+            depth--;
+            foundBrace = true;
           }
+
+          if (foundBrace && depth === 0) {
+            end = i;
+            break;
+          }
+        }
+
+        if (end !== -1) {
+          // Đã tìm thấy một đối tượng JSON hoàn chỉnh
+          const jsonStr = msgBuffer.substring(0, end + 1);
+          msgBuffer = msgBuffer.substring(end + 1);
+          processRawJSON(jsonStr.trim());
+        } else {
+          // Chưa đủ dữ liệu cho một thực thể JSON, đợi mảnh tiếp theo
+          break;
         }
       }
     }
